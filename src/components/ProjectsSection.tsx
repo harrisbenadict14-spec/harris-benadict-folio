@@ -1,20 +1,4 @@
 import { motion, type Variants } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-
-const projects = [
-  {
-    title: "Smart Classroom Automation",
-    description: "An IoT system using RFID, ESP32, IP camera, and face recognition to automate attendance and manage classroom power intelligently.",
-    tags: ["ESP32", "RFID", "Python", "IoT"],
-    stats: { metric: "95%", label: "Accuracy" },
-  },
-  {
-    title: "Coming Soon",
-    description: "More projects are on the way. Stay tuned for updates on new builds and experiments.",
-    tags: ["TBD"],
-    placeholder: true,
-  },
-];
 
 const fromLeft: Variants = {
   hidden: { opacity: 0, x: "-100%", filter: "blur(10px)" },
@@ -39,12 +23,12 @@ const ProjectsSection = () => (
         Projects
       </motion.p>
 
-      {/* Main project - 50/50 split */}
+      {/* Project 1 - Smart Classroom */}
       <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ margin: "-80px" }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-8"
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-16"
       >
         <motion.div variants={fromLeft}>
           <div className="flex items-center gap-2 mb-4">
@@ -52,13 +36,13 @@ const ProjectsSection = () => (
             <span className="text-xs text-muted-foreground">Featured Project</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            {projects[0].title}
+            Smart Classroom Automation
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-            {projects[0].description}
+            An IoT system using RFID, ESP32, IP camera, and face recognition to automate attendance and manage classroom power intelligently.
           </p>
           <div className="flex flex-wrap gap-2">
-            {projects[0].tags.map((tag) => (
+            {["ESP32", "RFID", "Python", "IoT"].map((tag) => (
               <span key={tag} className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground">
                 {tag}
               </span>
@@ -92,7 +76,75 @@ const ProjectsSection = () => (
         </motion.div>
       </motion.div>
 
-      {/* Coming soon */}
+      {/* Project 2 - NewsFlux */}
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ margin: "-80px" }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-16"
+      >
+        <motion.div variants={fromRight} className="border border-border rounded-2xl p-8 bg-card/40 backdrop-blur-sm order-2 md:order-1">
+          <div className="text-center mb-6">
+            <p className="text-4xl font-bold text-foreground mb-2">SaaS</p>
+            <p className="text-xs text-muted-foreground">Multi-Tenant Architecture</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">3</p>
+              <p className="text-[10px] text-muted-foreground">User Roles</p>
+            </div>
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">RBAC</p>
+              <p className="text-[10px] text-muted-foreground">Access Control</p>
+            </div>
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">Auto</p>
+              <p className="text-[10px] text-muted-foreground">Monthly Billing</p>
+            </div>
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">Offline</p>
+              <p className="text-[10px] text-muted-foreground">Worker Entry</p>
+            </div>
+          </div>
+          <div className="mt-6 p-4 border border-border rounded-xl bg-background/50">
+            <p className="text-[10px] text-muted-foreground mb-1 uppercase tracking-wider">Core Logic</p>
+            <p className="text-xs text-foreground/80 font-mono">Daily Sales = Taken − Returned</p>
+            <p className="text-xs text-foreground/80 font-mono">Revenue = Sold × Price</p>
+          </div>
+        </motion.div>
+
+        <motion.div variants={fromLeft} className="order-1 md:order-2">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-2 h-2 rounded-full bg-foreground/50" />
+            <span className="text-xs text-muted-foreground">SaaS Platform</span>
+          </div>
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+            NewsFlux
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+            A multi-tenant SaaS platform designed to digitize newspaper distribution agencies. Manages daily stock, distributor tracking, customer subscriptions, and automated billing.
+          </p>
+          <p className="text-xs text-muted-foreground leading-relaxed mb-6">
+            Supports Super Admin, Agency Admin, and Worker roles with full RBAC, offline-friendly data entry, and automated database backups.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-6">
+            {["FastAPI", "React.js", "PostgreSQL", "Multi-Tenant"].map((tag) => (
+              <span key={tag} className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {["SaaS Design", "API Development", "DB Architecture", "Automated Billing"].map((skill) => (
+              <span key={skill} className="text-[10px] px-2.5 py-1 rounded-full bg-accent text-accent-foreground">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Coming soon placeholders */}
       <motion.div
         initial="hidden"
         whileInView="show"
