@@ -42,24 +42,34 @@ const HeroSection = () => {
 
       {/* Name heading with scroll parallax fade */}
       <motion.div
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.1 }}
-        style={{ opacity: nameOpacity, y: nameY }}
-        className="absolute top-24 left-0 right-0 text-center pointer-events-none select-none z-10"
+        initial="hidden"
+        animate="show"
+        className="absolute top-24 left-0 right-0 pointer-events-none select-none z-10"
       >
-        <motion.h1
-          initial={{ letterSpacing: "0.3em", opacity: 0 }}
-          animate={{ letterSpacing: "0.05em", opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.3 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
-        >
-          Harris Benadict. A
-        </motion.h1>
+        <div className="flex items-center justify-center gap-2 md:gap-4">
+          <motion.span
+            variants={{
+              hidden: { opacity: 0, x: "-100%", filter: "blur(12px)" },
+              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 } },
+            } as Variants}
+            className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
+          >
+            Harris
+          </motion.span>
+          <motion.span
+            variants={{
+              hidden: { opacity: 0, x: "100%", filter: "blur(12px)" },
+              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 } },
+            } as Variants}
+            className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
+          >
+            Benadict. A
+          </motion.span>
+        </div>
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 1.0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
           className="h-px w-32 md:w-48 mx-auto mt-4 bg-gradient-to-r from-transparent via-foreground/20 to-transparent origin-center"
         />
       </motion.div>
