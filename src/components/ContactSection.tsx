@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Mail, Github, Linkedin, ArrowRight } from "lucide-react";
 
 const links = [
@@ -7,59 +7,76 @@ const links = [
   { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/harrisbenadict", text: "linkedin.com/in/harrisbenadict" },
 ];
 
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+
+const cardUp: Variants = {
+  hidden: { opacity: 0, y: 50, scale: 0.95 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7 } },
+};
+
+const textFade: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
 const ContactSection = () => (
   <section id="contact" className="py-24 px-6 relative z-10">
     <div className="max-w-5xl mx-auto">
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-xs text-muted-foreground uppercase tracking-widest mb-4"
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
       >
-        Contact
-      </motion.p>
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.1 }}
-        className="text-2xl md:text-3xl font-bold text-foreground mb-3"
+        <motion.p variants={textFade} className="text-xs text-muted-foreground uppercase tracking-widest mb-4">
+          Contact
+        </motion.p>
+        <motion.h2 variants={textFade} className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+          Let's Connect
+        </motion.h2>
+        <motion.p variants={textFade} className="text-sm text-muted-foreground mb-10 max-w-md">
+          Want to collaborate or just say hello? Reach out through any of the channels below.
+        </motion.p>
+      </motion.div>
+
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-50px" }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
-        Let's Connect
-      </motion.h2>
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.15 }}
-        className="text-sm text-muted-foreground mb-10 max-w-md"
-      >
-        Want to collaborate or just say hello? Reach out through any of the channels below.
-      </motion.p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {links.map((link, i) => (
+        {links.map((link) => (
           <motion.a
             key={link.label}
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
+            variants={cardUp}
+            whileHover={{ y: -6, transition: { duration: 0.3 } }}
             className="group border border-border rounded-2xl p-6 bg-card/40 backdrop-blur-sm hover:border-foreground/10 transition-all duration-500 flex flex-col"
           >
-            <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center mb-4">
+            <motion.div
+              whileHover={{ rotate: -10, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center mb-4"
+            >
               <link.icon size={18} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
-            </div>
+            </motion.div>
             <span className="text-sm font-semibold text-foreground mb-1">{link.label}</span>
             <span className="text-xs text-muted-foreground mb-4">{link.text}</span>
             <span className="inline-flex items-center gap-1 text-xs text-muted-foreground group-hover:text-foreground transition-colors mt-auto">
-              Connect <ArrowRight size={12} />
+              Connect
+              <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                <ArrowRight size={12} />
+              </motion.span>
             </span>
           </motion.a>
         ))}
-      </div>
+      </motion.div>
     </div>
   </section>
 );
