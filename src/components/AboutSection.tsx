@@ -5,9 +5,14 @@ const container: Variants = {
   show: { transition: { staggerChildren: 0.15 } },
 };
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7 } },
+const fromLeft: Variants = {
+  hidden: { opacity: 0, x: -80, filter: "blur(8px)" },
+  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8 } },
+};
+
+const fromRight: Variants = {
+  hidden: { opacity: 0, x: 80, filter: "blur(8px)" },
+  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8 } },
 };
 
 const lineReveal: Variants = {
@@ -16,17 +21,17 @@ const lineReveal: Variants = {
 };
 
 const AboutSection = () => (
-  <section id="about" className="py-24 px-6 relative z-10">
+  <section id="about" className="py-24 px-6 relative z-10 overflow-hidden">
     <div className="max-w-5xl mx-auto">
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}>
-        <motion.p variants={fadeUp} className="text-xs text-muted-foreground uppercase tracking-widest mb-4">
+        <motion.p variants={fromLeft} className="text-xs text-muted-foreground uppercase tracking-widest mb-4">
           About Me
         </motion.p>
-        <motion.h2 variants={fadeUp} className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+        <motion.h2 variants={fromRight} className="text-2xl md:text-3xl font-bold text-foreground mb-3">
           Revolutionizing Digital Innovation
         </motion.h2>
         <motion.div variants={lineReveal} className="h-px bg-gradient-to-r from-foreground/20 to-transparent mb-6 origin-left" />
-        <motion.p variants={fadeUp} className="text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed">
+        <motion.p variants={fromLeft} className="text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed">
           I'm a student developer passionate about IoT, embedded systems, and automation.
           I love designing and building smart, real-world technology solutions — from sensor
           networks to intelligent classroom systems. My work sits at the intersection of
