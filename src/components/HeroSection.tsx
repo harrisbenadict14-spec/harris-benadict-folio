@@ -27,16 +27,27 @@ const HeroSection = () => (
       style={{ background: "radial-gradient(circle, hsl(0 0% 15% / 0.2), transparent 70%)" }}
     />
 
-    {/* Large watermark text */}
+    {/* Name heading at top with scroll fade */}
     <motion.div
-      initial={{ opacity: 0, x: -100 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 1.5 }}
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+      initial={{ opacity: 0, y: -40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 0.1 }}
+      className="absolute top-24 left-0 right-0 text-center pointer-events-none select-none z-10"
     >
-      <h1 className="text-[8rem] md:text-[14rem] lg:text-[18rem] font-black tracking-tighter text-foreground/[0.03] whitespace-nowrap leading-none">
-        PORTFOLIO
-      </h1>
+      <motion.h1
+        initial={{ letterSpacing: "0.3em", opacity: 0 }}
+        animate={{ letterSpacing: "0.05em", opacity: 1 }}
+        transition={{ duration: 1.2, delay: 0.3 }}
+        className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
+      >
+        Harris Benadict
+      </motion.h1>
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.8, delay: 1.0 }}
+        className="h-px w-32 md:w-48 mx-auto mt-4 bg-gradient-to-r from-transparent via-foreground/20 to-transparent origin-center"
+      />
     </motion.div>
 
     <motion.div variants={staggerContainer} initial="hidden" animate="show" className="relative z-10 max-w-5xl mx-auto text-center">
