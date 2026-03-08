@@ -1,7 +1,7 @@
 import { motion, type Variants, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
-import hero3d from "@/assets/hero-3d.png";
+import HeroScene from "./HeroScene";
 import ParallaxSection from "./ParallaxSection";
 
 const staggerContainer: Variants = {
@@ -83,14 +83,8 @@ const HeroSection = () => {
       >
         {/* 3D Shape with float + parallax */}
         <ParallaxSection speed={0.2}>
-          <motion.div variants={scaleIn} className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-8">
-            <motion.img
-              animate={{ y: [-10, 10, -10], rotate: [0, 3, 0, -3, 0] }}
-              transition={{ duration: 6, repeat: Infinity }}
-              src={hero3d}
-              alt="3D abstract shape"
-              className="w-full h-full object-contain drop-shadow-[0_0_60px_hsl(30_80%_50%/0.3)]"
-            />
+          <motion.div variants={scaleIn} className="mb-8">
+            <HeroScene />
           </motion.div>
         </ParallaxSection>
 
