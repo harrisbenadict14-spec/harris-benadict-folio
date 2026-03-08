@@ -1,7 +1,7 @@
 import { motion, type Variants, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
-import hero3d from "@/assets/hero-3d.png";
+import HeroScene from "./HeroScene";
 import ParallaxSection from "./ParallaxSection";
 
 const staggerContainer: Variants = {
