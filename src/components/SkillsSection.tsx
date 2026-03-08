@@ -15,13 +15,8 @@ const container: Variants = {
   show: { transition: { staggerChildren: 0.1 } },
 };
 
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6 } },
-};
-
 const SkillsSection = () => (
-  <section id="skills" className="py-24 px-6 relative z-10">
+  <section id="skills" className="py-24 px-6 relative z-10 overflow-hidden">
     <div className="max-w-5xl mx-auto">
       <motion.p
         initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
@@ -39,27 +34,42 @@ const SkillsSection = () => (
         viewport={{ once: true, margin: "-50px" }}
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
-        {skills.map((skill) => (
-          <motion.div
-            key={skill.name}
-            variants={cardVariant}
-            whileHover={{ y: -6, transition: { duration: 0.3 } }}
-            className="group border border-border rounded-2xl p-6 bg-card/40 backdrop-blur-sm hover:border-foreground/10 transition-all duration-500 cursor-default"
-          >
+        {skills.map((skill, i) => {
+          // Alternate: left column from left, right column from right, center from bottom
+          const col = i % 3;
+          const variant: Variants = {
+            hidden: {
+              opacity: 0,
+              x: col === 0 ? -80 : col === 2 ? 80 : 0,
+              y: col === 1 ? 40 : 0,
+              scale: 0.95,
+              filter: "blur(6px)",
+            },
+            show: { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)", transition: { duration: 0.7 } },
+          };
+
+          return (
             <motion.div
-              whileHover={{ rotate: 10, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center mb-4"
+              key={skill.name}
+              variants={variant}
+              whileHover={{ y: -6, transition: { duration: 0.3 } }}
+              className="group border border-border rounded-2xl p-6 bg-card/40 backdrop-blur-sm hover:border-foreground/10 transition-all duration-500 cursor-default"
             >
-              <skill.icon size={18} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
+              <motion.div
+                whileHover={{ rotate: 10, scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center mb-4"
+              >
+                <skill.icon size={18} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
+              </motion.div>
+              <h3 className="text-sm font-semibold text-foreground mb-2">{skill.name}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">{skill.description}</p>
+              <a href="#projects" className="inline-block mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4">
+                Learn More
+              </a>
             </motion.div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">{skill.name}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{skill.description}</p>
-            <a href="#projects" className="inline-block mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4">
-              Learn More
-            </a>
-          </motion.div>
-        ))}
+          );
+        })}
       </motion.div>
     </div>
   </section>
