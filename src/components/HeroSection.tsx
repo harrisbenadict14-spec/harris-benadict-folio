@@ -43,21 +43,22 @@ const HeroSection = () => {
       {/* Name heading with scroll parallax fade */}
       <motion.div
         className="absolute top-24 left-0 right-0 pointer-events-none select-none z-10"
+        style={{ opacity: nameOpacity, y: nameY }}
       >
         <div className="flex items-center justify-center gap-2 md:gap-4">
           <motion.span
-            initial={{ opacity: 0, x: -200, filter: "blur(12px)" }}
+            initial={{ opacity: 0, x: -100, filter: "blur(12px)" }}
             whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: false, amount: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
             Harris
           </motion.span>
           <motion.span
-            initial={{ opacity: 0, x: 200, filter: "blur(12px)" }}
+            initial={{ opacity: 0, x: 100, filter: "blur(12px)" }}
             whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: false, amount: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
@@ -67,7 +68,7 @@ const HeroSection = () => {
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: false, amount: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           className="h-px w-32 md:w-48 mx-auto mt-4 bg-gradient-to-r from-transparent via-foreground/20 to-transparent origin-center"
         />
