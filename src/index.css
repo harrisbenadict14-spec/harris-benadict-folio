@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,40 +6,37 @@
 
 @layer base {
   :root {
-    --background: 230 25% 4%;
-    --foreground: 210 40% 93%;
-    --card: 230 20% 8%;
-    --card-foreground: 210 40% 93%;
-    --popover: 230 20% 8%;
-    --popover-foreground: 210 40% 93%;
-    --primary: 210 100% 65%;
-    --primary-foreground: 230 25% 4%;
-    --secondary: 230 15% 12%;
-    --secondary-foreground: 210 40% 93%;
-    --muted: 230 15% 12%;
-    --muted-foreground: 220 15% 50%;
-    --accent: 260 60% 55%;
-    --accent-foreground: 210 40% 93%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 95%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 93%;
-    --border: 230 15% 14%;
-    --input: 230 15% 14%;
-    --ring: 210 100% 65%;
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 95%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 0 0% 100%;
+    --radius: 0.75rem;
 
-    --glow-primary: 210 100% 65%;
-    --glow-accent: 260 60% 55%;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 0 0% 100%;
 
-    --sidebar-background: 230 25% 5%;
-    --sidebar-foreground: 210 40% 93%;
-    --sidebar-primary: 210 100% 65%;
-    --sidebar-primary-foreground: 230 25% 4%;
-    --sidebar-accent: 230 15% 12%;
-    --sidebar-accent-foreground: 210 40% 93%;
-    --sidebar-border: 230 15% 14%;
-    --sidebar-ring: 210 100% 65%;
-
-    --font-heading: 'Space Grotesk', sans-serif;
+    --font-heading: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
 }
@@ -50,7 +47,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
   html {
     scroll-behavior: smooth;
@@ -61,66 +58,14 @@
   .font-mono-code {
     font-family: var(--font-mono);
   }
-  .glow-text {
-    text-shadow: 0 0 20px hsl(var(--glow-primary) / 0.4), 0 0 60px hsl(var(--glow-primary) / 0.15);
-  }
-  .glow-border {
-    box-shadow: 0 0 15px hsl(var(--glow-primary) / 0.1), inset 0 0 15px hsl(var(--glow-primary) / 0.03);
-  }
-  .glow-border-hover:hover {
-    box-shadow: 0 0 25px hsl(var(--glow-primary) / 0.2), inset 0 0 20px hsl(var(--glow-primary) / 0.05);
-  }
 }
 
-/* Starfield background */
-.starfield {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.starfield::before,
-.starfield::after {
-  content: '';
+/* Subtle radial glow */
+.hero-glow {
   position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, hsl(210 40% 93% / 0.6), transparent),
-    radial-gradient(1px 1px at 40% 70%, hsl(210 40% 93% / 0.4), transparent),
-    radial-gradient(1px 1px at 60% 20%, hsl(210 40% 93% / 0.5), transparent),
-    radial-gradient(1px 1px at 80% 50%, hsl(210 40% 93% / 0.3), transparent),
-    radial-gradient(1.5px 1.5px at 10% 60%, hsl(210 100% 65% / 0.5), transparent),
-    radial-gradient(1px 1px at 70% 80%, hsl(210 40% 93% / 0.35), transparent),
-    radial-gradient(1px 1px at 90% 10%, hsl(210 40% 93% / 0.45), transparent),
-    radial-gradient(1px 1px at 30% 90%, hsl(210 40% 93% / 0.3), transparent),
-    radial-gradient(1.5px 1.5px at 50% 40%, hsl(260 60% 55% / 0.4), transparent),
-    radial-gradient(1px 1px at 15% 15%, hsl(210 40% 93% / 0.5), transparent),
-    radial-gradient(1px 1px at 85% 85%, hsl(210 40% 93% / 0.3), transparent),
-    radial-gradient(1px 1px at 45% 55%, hsl(210 40% 93% / 0.4), transparent);
-  background-size: 550px 550px;
-  animation: drift 120s linear infinite;
-}
-
-.starfield::after {
-  background-size: 350px 350px;
-  opacity: 0.6;
-  animation: drift 80s linear infinite reverse;
-}
-
-@keyframes drift {
-  from { transform: translateY(0); }
-  to { transform: translateY(-550px); }
-}
-
-/* Nebula gradient overlay */
-.nebula-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(0 0% 20% / 0.15), transparent 70%);
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 80%, hsl(260 60% 55% / 0.06), transparent),
-    radial-gradient(ellipse 60% 50% at 80% 20%, hsl(210 100% 65% / 0.05), transparent);
 }

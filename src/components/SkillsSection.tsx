@@ -1,26 +1,51 @@
 import { motion } from "framer-motion";
+import { Cpu, Code, Wifi, Zap, Terminal, CircuitBoard } from "lucide-react";
 
 const skills = [
-  { name: "C Programming", icon: "{ }" },
-  { name: "Python", icon: "py" },
-  { name: "HTML & CSS", icon: "</>" },
-  { name: "ESP32 / IoT", icon: "⚡" },
-  { name: "Arduino", icon: "∞" },
-  { name: "Embedded Systems", icon: "◈" },
+  {
+    icon: Cpu,
+    name: "Embedded Systems",
+    description: "Designing firmware and hardware interfaces for microcontrollers and real-time systems.",
+  },
+  {
+    icon: Wifi,
+    name: "IoT Solutions",
+    description: "From concept to deployment, building connected device ecosystems for smart automation.",
+  },
+  {
+    icon: Code,
+    name: "Full-Stack Dev",
+    description: "Building web interfaces and dashboards to control and monitor IoT devices remotely.",
+  },
+  {
+    icon: Zap,
+    name: "ESP32 / Arduino",
+    description: "Prototyping and deploying smart hardware using popular microcontroller platforms.",
+  },
+  {
+    icon: Terminal,
+    name: "Python & C",
+    description: "Writing efficient, low-level code for performance-critical embedded applications.",
+  },
+  {
+    icon: CircuitBoard,
+    name: "Circuit Design",
+    description: "PCB design and sensor integration for custom hardware solutions.",
+  },
 ];
 
 const SkillsSection = () => (
-  <section id="skills" className="py-32 px-6 relative z-10">
-    <div className="max-w-4xl mx-auto">
-      <motion.h2
+  <section id="skills" className="py-24 px-6 relative z-10">
+    <div className="max-w-5xl mx-auto">
+      <motion.p
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="font-mono-code text-sm text-primary/60 tracking-widest uppercase mb-12"
+        className="text-xs text-muted-foreground uppercase tracking-widest mb-12 text-center"
       >
-        // Skills
-      </motion.h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        What I Do
+      </motion.p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {skills.map((skill, i) => (
           <motion.div
             key={skill.name}
@@ -28,12 +53,16 @@ const SkillsSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08 }}
-            className="group border border-border rounded-lg p-6 bg-card/30 backdrop-blur-sm glow-border glow-border-hover hover:border-primary/20 transition-all duration-500 cursor-default"
+            className="group border border-border rounded-2xl p-6 bg-card/40 backdrop-blur-sm hover:border-foreground/10 transition-all duration-500"
           >
-            <span className="font-mono-code text-2xl text-primary/40 group-hover:text-primary transition-colors duration-300 block mb-3">
-              {skill.icon}
-            </span>
-            <span className="text-sm font-medium text-foreground">{skill.name}</span>
+            <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center mb-4">
+              <skill.icon size={18} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
+            </div>
+            <h3 className="text-sm font-semibold text-foreground mb-2">{skill.name}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">{skill.description}</p>
+            <a href="#projects" className="inline-block mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4">
+              Learn More
+            </a>
           </motion.div>
         ))}
       </div>
