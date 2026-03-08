@@ -37,7 +37,7 @@ const LoadingScreen = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-2xl md:text-4xl font-black text-foreground tracking-tight"
             >
-              Harris Benadict<span className="text-muted-foreground/60">. A</span>
+              Harris Benadict. A
             </motion.p>
             <motion.div
               initial={{ scaleX: 0 }}
