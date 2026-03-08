@@ -36,7 +36,7 @@ const LoadingScreen = () => {
                 initial={{ opacity: 0, x: -80 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-2xl md:text-4xl font-black text-foreground tracking-tight"
+                className="text-2xl md:text-4xl font-semibold text-foreground tracking-tight italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 Harris
               </motion.span>
