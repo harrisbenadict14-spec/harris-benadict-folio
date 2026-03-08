@@ -6,6 +6,7 @@ const projects = [
     title: "Smart Classroom Automation",
     description: "An IoT system using RFID, ESP32, IP camera, and face recognition to automate attendance and manage classroom power intelligently.",
     tags: ["ESP32", "RFID", "Python", "IoT"],
+    stats: { metric: "95%", label: "Accuracy" },
   },
   {
     title: "Coming Soon",
@@ -13,79 +14,99 @@ const projects = [
     tags: ["TBD"],
     placeholder: true,
   },
-  {
-    title: "Coming Soon",
-    description: "Future project placeholder — always building, always learning.",
-    tags: ["TBD"],
-    placeholder: true,
-  },
 ];
 
-const container: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.15 } },
+const fromLeft: Variants = {
+  hidden: { opacity: 0, x: "-100%", filter: "blur(10px)" },
+  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const fromRight: Variants = {
+  hidden: { opacity: 0, x: "100%", filter: "blur(10px)" },
+  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
 };
 
 const ProjectsSection = () => (
-  <section id="projects" className="py-24 px-6 relative z-10 overflow-hidden">
-    <div className="max-w-5xl mx-auto">
+  <section id="projects" className="py-28 px-6 relative z-10 overflow-hidden">
+    <div className="max-w-6xl mx-auto">
       <motion.p
-        initial={{ opacity: 0, x: -60, filter: "blur(8px)" }}
-        whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, x: -60 }}
+        whileInView={{ opacity: 1, x: 0 }}
         viewport={{}}
         transition={{ duration: 0.6 }}
-        className="text-xs text-muted-foreground uppercase tracking-widest mb-12"
+        className="text-xs text-muted-foreground uppercase tracking-widest mb-14"
       >
         Projects
       </motion.p>
+
+      {/* Main project - 50/50 split */}
       <motion.div
-        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ margin: "-80px" }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-8"
+      >
+        <motion.div variants={fromLeft}>
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-2 h-2 rounded-full bg-foreground/50" />
+            <span className="text-xs text-muted-foreground">Featured Project</span>
+          </div>
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+            {projects[0].title}
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            {projects[0].description}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {projects[0].tags.map((tag) => (
+              <span key={tag} className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div variants={fromRight} className="border border-border rounded-2xl p-8 bg-card/40 backdrop-blur-sm">
+          <div className="text-center mb-6">
+            <p className="text-5xl font-bold text-foreground mb-2">95%</p>
+            <p className="text-xs text-muted-foreground">Recognition Accuracy</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">RFID</p>
+              <p className="text-[10px] text-muted-foreground">Access Control</p>
+            </div>
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">ESP32</p>
+              <p className="text-[10px] text-muted-foreground">IoT Controller</p>
+            </div>
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">AI</p>
+              <p className="text-[10px] text-muted-foreground">Face Recognition</p>
+            </div>
+            <div className="text-center border border-border rounded-xl p-4">
+              <p className="text-lg font-bold text-foreground">Auto</p>
+              <p className="text-[10px] text-muted-foreground">Power Control</p>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Coming soon */}
+      <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ margin: "-50px" }}
-        className="space-y-4"
+        className="grid grid-cols-1 md:grid-cols-2 gap-8"
       >
-        {projects.map((project, i) => {
-          // Alternate left and right
-          const fromSide: Variants = {
-            hidden: { opacity: 0, x: i % 2 === 0 ? -100 : 100, filter: "blur(8px)" },
-            show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8 } },
-          };
-
-          return (
-            <motion.div
-              key={i}
-              variants={fromSide}
-              whileHover={!project.placeholder ? { y: -4, transition: { duration: 0.3 } } : undefined}
-              className={`group border rounded-2xl p-6 md:p-8 transition-all duration-500 ${
-                project.placeholder
-                  ? "opacity-30 border-dashed border-border bg-transparent"
-                  : "border-border bg-card/40 backdrop-blur-sm hover:border-foreground/10 cursor-pointer"
-              }`}
-            >
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="text-base font-semibold text-foreground">{project.title}</h3>
-                {!project.placeholder && (
-                  <motion.div whileHover={{ x: 3, y: -3 }} transition={{ type: "spring", stiffness: 400 }}>
-                    <ArrowUpRight size={16} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
-                  </motion.div>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed max-w-xl">{project.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <motion.span
-                    key={tag}
-                    whileHover={{ scale: 1.05 }}
-                    className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground transition-colors"
-                  >
-                    {tag}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-          );
-        })}
+        <motion.div variants={fromRight} className="opacity-30 border border-dashed border-border rounded-2xl p-8">
+          <h3 className="text-base font-semibold text-foreground mb-2">Coming Soon</h3>
+          <p className="text-xs text-muted-foreground">More projects on the way — always building.</p>
+        </motion.div>
+        <motion.div variants={fromLeft} className="opacity-30 border border-dashed border-border rounded-2xl p-8">
+          <h3 className="text-base font-semibold text-foreground mb-2">Coming Soon</h3>
+          <p className="text-xs text-muted-foreground">Future project placeholder — always learning.</p>
+        </motion.div>
       </motion.div>
     </div>
   </section>
