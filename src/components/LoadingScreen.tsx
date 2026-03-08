@@ -31,14 +31,24 @@ const LoadingScreen = () => {
 
           {/* Name reveal */}
           <motion.div className="relative z-10 text-center overflow-hidden">
-            <motion.p
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-2xl md:text-4xl font-black text-foreground tracking-tight"
-            >
-              Harris Benadict. A
-            </motion.p>
+            <div className="flex items-center justify-center gap-2">
+              <motion.span
+                initial={{ opacity: 0, x: -80 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-2xl md:text-4xl font-black text-foreground tracking-tight"
+              >
+                Harris
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, x: 80 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-2xl md:text-4xl font-black text-foreground tracking-tight"
+              >
+                Benadict. A
+              </motion.span>
+            </div>
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
