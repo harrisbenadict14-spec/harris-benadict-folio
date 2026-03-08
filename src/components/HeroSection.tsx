@@ -51,7 +51,7 @@ const HeroSection = () => {
             whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
             viewport={{ once: false, amount: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
+            className="text-4xl md:text-6xl lg:text-8xl font-semibold text-foreground/90 leading-none italic tracking-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             Harris
           </motion.span>
