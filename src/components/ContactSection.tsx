@@ -28,7 +28,7 @@ const ContactSection = () => (
       <motion.div
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ margin: "-100px" }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
       >
         <motion.p variants={textFromLeft} className="text-xs text-muted-foreground uppercase tracking-widest mb-4">
