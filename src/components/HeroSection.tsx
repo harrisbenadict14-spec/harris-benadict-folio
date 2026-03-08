@@ -47,16 +47,18 @@ const HeroSection = () => {
         <div className="flex items-center justify-center gap-2 md:gap-4">
           <motion.span
             initial={{ opacity: 0, x: -200, filter: "blur(12px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 }}
+            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
             Harris
           </motion.span>
           <motion.span
             initial={{ opacity: 0, x: 200, filter: "blur(12px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 }}
+            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
             Benadict. A
@@ -64,8 +66,9 @@ const HeroSection = () => {
         </div>
         <motion.div
           initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 3.4 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           className="h-px w-32 md:w-48 mx-auto mt-4 bg-gradient-to-r from-transparent via-foreground/20 to-transparent origin-center"
         />
       </motion.div>
