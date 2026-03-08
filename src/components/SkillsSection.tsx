@@ -10,13 +10,13 @@ const skills = [
 ];
 
 const SkillsSection = () => (
-  <section id="skills" className="py-32 px-6">
+  <section id="skills" className="py-32 px-6 relative z-10">
     <div className="max-w-4xl mx-auto">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="font-mono-code text-sm text-muted-foreground tracking-widest uppercase mb-12"
+        className="font-mono-code text-sm text-primary/60 tracking-widest uppercase mb-12"
       >
         // Skills
       </motion.h2>
@@ -28,9 +28,9 @@ const SkillsSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08 }}
-            className="group border border-border rounded-lg p-6 hover:bg-card hover:border-muted-foreground/30 transition-all duration-300 cursor-default"
+            className="group border border-border rounded-lg p-6 bg-card/30 backdrop-blur-sm glow-border glow-border-hover hover:border-primary/20 transition-all duration-500 cursor-default"
           >
-            <span className="font-mono-code text-2xl text-muted-foreground group-hover:text-foreground transition-colors block mb-3">
+            <span className="font-mono-code text-2xl text-primary/40 group-hover:text-primary transition-colors duration-300 block mb-3">
               {skill.icon}
             </span>
             <span className="text-sm font-medium text-foreground">{skill.name}</span>

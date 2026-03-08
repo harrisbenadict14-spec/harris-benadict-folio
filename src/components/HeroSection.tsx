@@ -3,35 +3,35 @@ import { ArrowDown } from "lucide-react";
 
 const HeroSection = () => (
   <section className="min-h-screen flex items-center justify-center px-6 pt-16 relative">
-    <div className="max-w-3xl text-center">
+    <div className="max-w-3xl text-center relative z-10">
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="font-mono-code text-sm text-muted-foreground mb-4 tracking-widest uppercase"
+        transition={{ duration: 0.6 }}
+        className="font-mono-code text-sm text-primary/70 mb-4 tracking-widest uppercase"
       >
         Hello, I'm
       </motion.p>
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-6"
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-6 glow-text"
       >
         Harris Benadict
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
         className="font-mono-code text-sm md:text-base text-muted-foreground mb-8"
       >
-        IoT Developer &nbsp;|&nbsp; Student &nbsp;|&nbsp; Tech Enthusiast
+        IoT Developer &nbsp;<span className="text-primary/50">|</span>&nbsp; Student &nbsp;<span className="text-primary/50">|</span>&nbsp; Tech Enthusiast
       </motion.p>
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
         className="text-muted-foreground max-w-xl mx-auto leading-relaxed mb-12"
       >
         Building smart, connected solutions that bridge the gap between hardware and software.
@@ -41,13 +41,30 @@ const HeroSection = () => (
         href="#about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        transition={{ delay: 0.7 }}
+        className="inline-flex items-center gap-2 text-sm text-primary/60 hover:text-primary transition-colors"
       >
         <ArrowDown size={16} className="animate-bounce" />
         Scroll down
       </motion.a>
     </div>
+    {/* Orbital ring decoration */}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.5, delay: 0.5 }}
+      className="absolute inset-0 flex items-center justify-center pointer-events-none"
+    >
+      <div className="w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full border border-primary/5 animate-[spin_60s_linear_infinite]" />
+    </motion.div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.5, delay: 0.7 }}
+      className="absolute inset-0 flex items-center justify-center pointer-events-none"
+    >
+      <div className="w-[350px] h-[350px] md:w-[500px] md:h-[500px] rounded-full border border-accent/5 animate-[spin_45s_linear_infinite_reverse]" />
+    </motion.div>
   </section>
 );
 

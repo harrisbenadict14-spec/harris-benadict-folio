@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 
 const Index = () => (
   <>
+    <div className="starfield" />
+    <div className="nebula-bg" />
     <Navbar />
     <HeroSection />
     <AboutSection />

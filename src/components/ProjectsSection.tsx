@@ -23,13 +23,13 @@ const projects = [
 ];
 
 const ProjectsSection = () => (
-  <section id="projects" className="py-32 px-6">
+  <section id="projects" className="py-32 px-6 relative z-10">
     <div className="max-w-4xl mx-auto">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="font-mono-code text-sm text-muted-foreground tracking-widest uppercase mb-12"
+        className="font-mono-code text-sm text-primary/60 tracking-widest uppercase mb-12"
       >
         // Projects
       </motion.h2>
@@ -41,10 +41,10 @@ const ProjectsSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className={`group border border-border rounded-lg p-6 md:p-8 transition-all duration-300 ${
+            className={`group border rounded-lg p-6 md:p-8 transition-all duration-500 ${
               project.placeholder
-                ? "opacity-40 border-dashed"
-                : "hover:bg-card hover:border-muted-foreground/30 cursor-pointer"
+                ? "opacity-30 border-dashed border-border bg-transparent"
+                : "border-border bg-card/30 backdrop-blur-sm glow-border glow-border-hover hover:border-primary/20 cursor-pointer"
             }`}
           >
             <div className="flex items-start justify-between mb-3">
@@ -52,7 +52,7 @@ const ProjectsSection = () => (
               {!project.placeholder && (
                 <ArrowUpRight
                   size={18}
-                  className="text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+                  className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
                 />
               )}
             </div>
@@ -61,7 +61,7 @@ const ProjectsSection = () => (
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="font-mono-code text-xs px-2 py-1 rounded bg-secondary text-muted-foreground"
+                  className="font-mono-code text-xs px-2 py-1 rounded bg-secondary text-primary/60"
                 >
                   {tag}
                 </span>
