@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Cpu, Code, Wifi, Zap, Terminal, CircuitBoard } from "lucide-react";
 
 const skills = [
@@ -10,14 +10,14 @@ const skills = [
   { icon: CircuitBoard, name: "Circuit Design", description: "PCB design and sensor integration for custom hardware solutions." },
 ];
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.1 } },
 };
 
-const cardVariant = {
+const cardVariant: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6 } },
 };
 
 const SkillsSection = () => (

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Mail, Github, Linkedin, ArrowRight } from "lucide-react";
 
 const links = [
@@ -7,14 +7,19 @@ const links = [
   { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/harrisbenadict", text: "linkedin.com/in/harrisbenadict" },
 ];
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
 };
 
-const cardUp = {
+const cardUp: Variants = {
   hidden: { opacity: 0, y: 50, scale: 0.95 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7 } },
+};
+
+const textFade: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
 const ContactSection = () => (
@@ -26,22 +31,13 @@ const ContactSection = () => (
         viewport={{ once: true, margin: "-100px" }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
       >
-        <motion.p
-          variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-          className="text-xs text-muted-foreground uppercase tracking-widest mb-4"
-        >
+        <motion.p variants={textFade} className="text-xs text-muted-foreground uppercase tracking-widest mb-4">
           Contact
         </motion.p>
-        <motion.h2
-          variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-          className="text-2xl md:text-3xl font-bold text-foreground mb-3"
-        >
+        <motion.h2 variants={textFade} className="text-2xl md:text-3xl font-bold text-foreground mb-3">
           Let's Connect
         </motion.h2>
-        <motion.p
-          variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-          className="text-sm text-muted-foreground mb-10 max-w-md"
-        >
+        <motion.p variants={textFade} className="text-sm text-muted-foreground mb-10 max-w-md">
           Want to collaborate or just say hello? Reach out through any of the channels below.
         </motion.p>
       </motion.div>

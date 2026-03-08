@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 const projects = [
@@ -21,14 +21,14 @@ const projects = [
   },
 ];
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
 };
 
-const slideIn = {
+const slideIn: Variants = {
   hidden: { opacity: 0, x: -40, filter: "blur(6px)" },
-  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: "easeOut" } },
+  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.7 } },
 };
 
 const ProjectsSection = () => (

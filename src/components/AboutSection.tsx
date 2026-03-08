@@ -1,18 +1,18 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.15 } },
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7 } },
 };
 
-const lineReveal = {
+const lineReveal: Variants = {
   hidden: { scaleX: 0 },
-  show: { scaleX: 1, transition: { duration: 0.8, ease: "easeOut" } },
+  show: { scaleX: 1, transition: { duration: 0.8 } },
 };
 
 const AboutSection = () => (
