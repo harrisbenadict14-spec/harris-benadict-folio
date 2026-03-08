@@ -103,44 +103,6 @@ const HeroSection = () => {
         </motion.a>
       </motion.div>
 
-      {/* Stats row */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-        className="relative z-10 flex items-center gap-12 mt-20"
-      >
-        <div className="flex items-center gap-3">
-          <motion.span
-            animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-2 h-2 rounded-full bg-muted-foreground/50"
-          />
-          <span className="text-xs text-muted-foreground">Project Success</span>
-        </div>
-        <div className="text-center">
-          <motion.p
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 1.4, type: "spring", stiffness: 200 }}
-            className="text-3xl md:text-4xl font-bold text-foreground"
-          >
-            10+
-          </motion.p>
-          <p className="text-xs text-muted-foreground mt-1">Projects Built</p>
-        </div>
-        <div className="text-center">
-          <motion.p
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 1.6, type: "spring", stiffness: 200 }}
-            className="text-3xl md:text-4xl font-bold text-foreground"
-          >
-            99.9%
-          </motion.p>
-          <p className="text-xs text-muted-foreground mt-1">Uptime Reliability</p>
-        </div>
-      </motion.div>
 
       {/* Smart Classroom CTA */}
       <motion.div
