@@ -1,29 +1,36 @@
 import { motion } from "framer-motion";
 
 const AboutSection = () => (
-  <section id="about" className="py-32 px-6 relative z-10">
-    <div className="max-w-3xl mx-auto">
+  <section id="about" className="py-24 px-6 relative z-10">
+    <div className="max-w-5xl mx-auto">
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-xs text-muted-foreground uppercase tracking-widest mb-4"
+      >
+        About Me
+      </motion.p>
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="font-mono-code text-sm text-primary/60 tracking-widest uppercase mb-8"
+        transition={{ delay: 0.1 }}
+        className="text-2xl md:text-3xl font-bold text-foreground mb-6"
       >
-        // About Me
+        Revolutionizing Digital Innovation
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.1 }}
-        className="text-lg md:text-xl leading-relaxed text-foreground/80"
+        transition={{ delay: 0.2 }}
+        className="text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed"
       >
-        I'm a student developer passionate about <span className="text-primary font-medium">IoT</span>,{" "}
-        <span className="text-primary font-medium">embedded systems</span>, and{" "}
-        <span className="text-accent font-medium">automation</span>. I love designing and building smart,
-        real-world technology solutions — from sensor networks to intelligent classroom systems.
-        My work sits at the intersection of hardware and software, where I bring ideas to life using
-        microcontrollers, connectivity protocols, and clean code.
+        I'm a student developer passionate about IoT, embedded systems, and automation.
+        I love designing and building smart, real-world technology solutions — from sensor
+        networks to intelligent classroom systems. My work sits at the intersection of
+        hardware and software.
       </motion.p>
     </div>
   </section>

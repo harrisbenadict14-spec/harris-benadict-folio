@@ -7,9 +7,7 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 const Index = () => (
-  <>
-    <div className="starfield" />
-    <div className="nebula-bg" />
+  <div className="bg-background min-h-screen">
     <Navbar />
     <HeroSection />
     <AboutSection />
@@ -17,7 +15,7 @@ const Index = () => (
     <ProjectsSection />
     <ContactSection />
     <Footer />
-  </>
+  </div>
 );
 
 export default Index;
