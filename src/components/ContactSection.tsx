@@ -46,7 +46,7 @@ const ContactSection = () => (
         variants={container}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ margin: "-50px" }}
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
         {links.map((link, i) => {

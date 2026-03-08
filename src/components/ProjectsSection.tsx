@@ -42,7 +42,7 @@ const ProjectsSection = () => (
         variants={container}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ margin: "-50px" }}
         className="space-y-4"
       >
         {projects.map((project, i) => {

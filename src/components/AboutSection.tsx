@@ -23,7 +23,7 @@ const lineReveal: Variants = {
 const AboutSection = () => (
   <section id="about" className="py-24 px-6 relative z-10 overflow-hidden">
     <div className="max-w-5xl mx-auto">
-      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}>
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ margin: "-100px" }}>
         <motion.p variants={fromLeft} className="text-xs text-muted-foreground uppercase tracking-widest mb-4">
           About Me
         </motion.p>
