@@ -21,7 +21,7 @@ const SkillsSection = () => (
       <motion.p
         initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true }}
+        viewport={{}}
         transition={{ duration: 0.6 }}
         className="text-xs text-muted-foreground uppercase tracking-widest mb-12 text-center"
       >
