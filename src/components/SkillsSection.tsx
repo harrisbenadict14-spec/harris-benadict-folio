@@ -21,7 +21,7 @@ const SkillsSection = () => (
       <motion.p
         initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true }}
+        viewport={{}}
         transition={{ duration: 0.6 }}
         className="text-xs text-muted-foreground uppercase tracking-widest mb-12 text-center"
       >
@@ -31,7 +31,7 @@ const SkillsSection = () => (
         variants={container}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ margin: "-50px" }}
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
         {skills.map((skill, i) => {

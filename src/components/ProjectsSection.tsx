@@ -32,7 +32,7 @@ const ProjectsSection = () => (
       <motion.p
         initial={{ opacity: 0, x: -60, filter: "blur(8px)" }}
         whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-        viewport={{ once: true }}
+        viewport={{}}
         transition={{ duration: 0.6 }}
         className="text-xs text-muted-foreground uppercase tracking-widest mb-12"
       >
@@ -42,7 +42,7 @@ const ProjectsSection = () => (
         variants={container}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ margin: "-50px" }}
         className="space-y-4"
       >
         {projects.map((project, i) => {
