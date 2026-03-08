@@ -42,25 +42,21 @@ const HeroSection = () => {
 
       {/* Name heading with scroll parallax fade */}
       <motion.div
-        initial="hidden"
-        animate="show"
         className="absolute top-24 left-0 right-0 pointer-events-none select-none z-10"
       >
-        <div className="flex items-center justify-center gap-2 md:gap-4 overflow-hidden">
+        <div className="flex items-center justify-center gap-2 md:gap-4">
           <motion.span
-            variants={{
-              hidden: { opacity: 0, x: "-100%", filter: "blur(12px)" },
-              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 } },
-            } as Variants}
+            initial={{ opacity: 0, x: -200, filter: "blur(12px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 }}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
             Harris
           </motion.span>
           <motion.span
-            variants={{
-              hidden: { opacity: 0, x: "100%", filter: "blur(12px)" },
-              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 } },
-            } as Variants}
+            initial={{ opacity: 0, x: 200, filter: "blur(12px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 }}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
             Benadict. A
