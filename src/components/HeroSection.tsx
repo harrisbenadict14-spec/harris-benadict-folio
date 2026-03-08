@@ -54,7 +54,7 @@ const HeroSection = () => {
           transition={{ duration: 1.2, delay: 0.3 }}
           className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
         >
-          Harris Benadict<span className="text-muted-foreground/60">. A</span>
+          Harris Benadict. A
         </motion.h1>
         <motion.div
           initial={{ scaleX: 0 }}
