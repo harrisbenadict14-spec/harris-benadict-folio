@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import CursorGlow from "@/components/CursorGlow";
 import ParticleField from "@/components/ParticleField";
-import ParallaxSection from "@/components/ParallaxSection";
 
 const Index = () => (
   <div className="bg-background min-h-screen">
@@ -17,13 +16,9 @@ const Index = () => (
     <ParticleField />
     <Navbar />
     <HeroSection />
-    <ParallaxSection speed={0.15}>
-      <AboutSection />
-    </ParallaxSection>
+    <AboutSection />
     <SkillsSection />
-    <ParallaxSection speed={0.1}>
-      <ProjectsSection />
-    </ParallaxSection>
+    <ProjectsSection />
     <ContactSection />
     <Footer />
   </div>
