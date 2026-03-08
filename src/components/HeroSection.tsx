@@ -31,7 +31,7 @@ const HeroSection = () => {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={sectionRef} className="min-h-screen flex flex-col items-center justify-center px-6 pt-16 relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-screen flex flex-col items-center justify-center px-6 pt-16 relative overflow-x-clip">
       {/* Animated radial glow */}
       <motion.div
         animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
