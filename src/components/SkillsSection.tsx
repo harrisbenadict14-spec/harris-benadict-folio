@@ -17,12 +17,7 @@ const container = {
 
 const cardVariant = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.25, 0.4, 0.25, 1] },
-  },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 const SkillsSection = () => (
@@ -48,13 +43,8 @@ const SkillsSection = () => (
           <motion.div
             key={skill.name}
             variants={cardVariant}
-            whileHover={{
-              y: -6,
-              borderColor: "hsl(0 0% 20%)",
-              boxShadow: "0 20px 40px -15px hsl(0 0% 0% / 0.5)",
-              transition: { duration: 0.3 },
-            }}
-            className="group border border-border rounded-2xl p-6 bg-card/40 backdrop-blur-sm transition-colors duration-500 cursor-default"
+            whileHover={{ y: -6, transition: { duration: 0.3 } }}
+            className="group border border-border rounded-2xl p-6 bg-card/40 backdrop-blur-sm hover:border-foreground/10 transition-all duration-500 cursor-default"
           >
             <motion.div
               whileHover={{ rotate: 10, scale: 1.1 }}

@@ -2,17 +2,6 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import hero3d from "@/assets/hero-3d.png";
 
-const floatAnimation = {
-  y: [-10, 10, -10],
-  transition: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-};
-
-const glowPulse = {
-  opacity: [0.3, 0.6, 0.3],
-  scale: [1, 1.05, 1],
-  transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-};
-
 const staggerContainer = {
   hidden: {},
   show: { transition: { staggerChildren: 0.15, delayChildren: 0.3 } },
@@ -20,28 +9,29 @@ const staggerContainer = {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.25, 0.4, 0.25, 1] } },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } },
 };
 
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.6, rotate: -10 },
-  show: { opacity: 1, scale: 1, rotate: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } },
+  show: { opacity: 1, scale: 1, rotate: 0, transition: { duration: 1.2, ease: "easeOut" } },
 };
 
 const HeroSection = () => (
   <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-16 relative overflow-hidden">
-    {/* Animated radial glow behind hero */}
+    {/* Animated radial glow */}
     <motion.div
-      animate={glowPulse}
+      animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
       style={{ background: "radial-gradient(circle, hsl(0 0% 15% / 0.2), transparent 70%)" }}
     />
 
-    {/* Large watermark text with slide animation */}
+    {/* Large watermark text */}
     <motion.div
       initial={{ opacity: 0, x: -100 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
     >
       <h1 className="text-[8rem] md:text-[14rem] lg:text-[18rem] font-black tracking-tighter text-foreground/[0.03] whitespace-nowrap leading-none">
@@ -49,16 +39,12 @@ const HeroSection = () => (
       </h1>
     </motion.div>
 
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      animate="show"
-      className="relative z-10 max-w-5xl mx-auto text-center"
-    >
+    <motion.div variants={staggerContainer} initial="hidden" animate="show" className="relative z-10 max-w-5xl mx-auto text-center">
       {/* 3D Shape with float */}
       <motion.div variants={scaleIn} className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-8">
         <motion.img
-          animate={floatAnimation}
+          animate={{ y: [-10, 10, -10] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           src={hero3d}
           alt="3D abstract shape"
           className="w-full h-full object-contain drop-shadow-[0_0_60px_hsl(30_80%_50%/0.3)]"
@@ -76,7 +62,7 @@ const HeroSection = () => (
       <motion.a
         href="#projects"
         variants={fadeUp}
-        whileHover={{ scale: 1.05, boxShadow: "0 0 30px hsl(0 0% 100% / 0.15)" }}
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.97 }}
         className="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background text-sm font-medium rounded-full hover:bg-foreground/90 transition-colors"
       >
@@ -88,7 +74,7 @@ const HeroSection = () => (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 1.2, ease: [0.25, 0.4, 0.25, 1] }}
+      transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
       className="relative z-10 flex items-center gap-12 mt-20"
     >
       <div className="flex items-center gap-3">
@@ -127,12 +113,12 @@ const HeroSection = () => (
     <motion.div
       initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: 1.0, ease: [0.25, 0.4, 0.25, 1] }}
+      transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
       className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block"
     >
       <motion.a
         href="#projects"
-        whileHover={{ scale: 1.03, borderColor: "hsl(0 0% 30%)" }}
+        whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         className="flex items-center gap-2 px-5 py-3 border border-border rounded-xl text-sm text-foreground transition-colors bg-card/50 backdrop-blur-sm"
       >
@@ -148,20 +134,9 @@ const HeroSection = () => (
       <motion.div
         key={i}
         className="absolute w-1 h-1 rounded-full bg-foreground/10"
-        style={{
-          left: `${15 + i * 15}%`,
-          top: `${20 + (i % 3) * 25}%`,
-        }}
-        animate={{
-          y: [0, -30, 0],
-          opacity: [0.1, 0.4, 0.1],
-        }}
-        transition={{
-          duration: 3 + i * 0.5,
-          repeat: Infinity,
-          delay: i * 0.3,
-          ease: "easeInOut",
-        }}
+        style={{ left: `${15 + i * 15}%`, top: `${20 + (i % 3) * 25}%` }}
+        animate={{ y: [0, -30, 0], opacity: [0.1, 0.4, 0.1] }}
+        transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
       />
     ))}
   </section>

@@ -7,12 +7,12 @@ const container = {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: [0.25, 0.4, 0.25, 1] } },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: "easeOut" } },
 };
 
 const lineReveal = {
   hidden: { scaleX: 0 },
-  show: { scaleX: 1, transition: { duration: 0.8, ease: [0.25, 0.4, 0.25, 1] } },
+  show: { scaleX: 1, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
 const AboutSection = () => (

@@ -28,7 +28,7 @@ const container = {
 
 const slideIn = {
   hidden: { opacity: 0, x: -40, filter: "blur(6px)" },
-  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: [0.25, 0.4, 0.25, 1] } },
+  show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: "easeOut" } },
 };
 
 const ProjectsSection = () => (
@@ -54,20 +54,11 @@ const ProjectsSection = () => (
           <motion.div
             key={i}
             variants={slideIn}
-            whileHover={
-              !project.placeholder
-                ? {
-                    y: -4,
-                    borderColor: "hsl(0 0% 20%)",
-                    boxShadow: "0 20px 40px -15px hsl(0 0% 0% / 0.5)",
-                    transition: { duration: 0.3 },
-                  }
-                : undefined
-            }
-            className={`group border rounded-2xl p-6 md:p-8 transition-colors duration-500 ${
+            whileHover={!project.placeholder ? { y: -4, transition: { duration: 0.3 } } : undefined}
+            className={`group border rounded-2xl p-6 md:p-8 transition-all duration-500 ${
               project.placeholder
                 ? "opacity-30 border-dashed border-border bg-transparent"
-                : "border-border bg-card/40 backdrop-blur-sm cursor-pointer"
+                : "border-border bg-card/40 backdrop-blur-sm hover:border-foreground/10 cursor-pointer"
             }`}
           >
             <div className="flex items-start justify-between mb-3">
@@ -83,7 +74,7 @@ const ProjectsSection = () => (
               {project.tags.map((tag) => (
                 <motion.span
                   key={tag}
-                  whileHover={{ scale: 1.05, borderColor: "hsl(0 0% 25%)" }}
+                  whileHover={{ scale: 1.05 }}
                   className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground transition-colors"
                 >
                   {tag}
