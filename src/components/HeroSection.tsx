@@ -46,11 +46,11 @@ const HeroSection = () => {
         animate="show"
         className="absolute top-24 left-0 right-0 pointer-events-none select-none z-10"
       >
-        <div className="flex items-center justify-center gap-2 md:gap-4">
+        <div className="flex items-center justify-center gap-2 md:gap-4 overflow-hidden">
           <motion.span
             variants={{
               hidden: { opacity: 0, x: "-100%", filter: "blur(12px)" },
-              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 } },
+              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 } },
             } as Variants}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
@@ -59,7 +59,7 @@ const HeroSection = () => {
           <motion.span
             variants={{
               hidden: { opacity: 0, x: "100%", filter: "blur(12px)" },
-              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 } },
+              show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay: 2.6 } },
             } as Variants}
             className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground/90 leading-none"
           >
@@ -69,7 +69,7 @@ const HeroSection = () => {
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
+          transition={{ duration: 0.8, delay: 3.4 }}
           className="h-px w-32 md:w-48 mx-auto mt-4 bg-gradient-to-r from-transparent via-foreground/20 to-transparent origin-center"
         />
       </motion.div>
