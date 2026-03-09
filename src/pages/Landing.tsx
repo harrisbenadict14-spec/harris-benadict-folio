@@ -1,11 +1,12 @@
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import HeroScene from "@/components/HeroScene";
-import CursorGlow from "@/components/CursorGlow";
-import ParticleField from "@/components/ParticleField";
-import LoadingScreen from "@/components/LoadingScreen";
+import { useState, lazy, Suspense } from "react";
+
+const HeroScene = lazy(() => import("@/components/HeroScene"));
+const ParticleField = lazy(() => import("@/components/ParticleField"));
+const LoadingScreen = lazy(() => import("@/components/LoadingScreen"));
+const CursorGlow = lazy(() => import("@/components/CursorGlow"));
 
 const staggerContainer: Variants = {
   hidden: {},
@@ -34,10 +35,16 @@ const Landing = () => {
   };
 
   return (
-    <div className="bg-background min-h-screen relative overflow-hidden">
-      <LoadingScreen />
-      <CursorGlow />
-      <ParticleField />
+    <div className="bg-background min-h-screen relative overflow-hidden noise-overlay">
+      <Suspense fallback={null}>
+        <LoadingScreen />
+      </Suspense>
+      <Suspense fallback={null}>
+        <CursorGlow />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ParticleField />
+      </Suspense>
 
       {/* Transition overlay */}
       <motion.div
@@ -50,43 +57,49 @@ const Landing = () => {
         style={{ pointerEvents: "none" }}
       />
 
-      {/* Split curtain lines */}
-      <motion.div
-        initial={false}
-        animate={isTransitioning ? {
-          x: "-100%",
-          transition: { duration: 0.8, delay: 0.3, ease: [0.76, 0, 0.24, 1] }
-        } : { x: "0%" }}
-        className="fixed top-0 left-0 w-1/2 h-full z-[99] pointer-events-none"
-      >
-        <div className="absolute right-0 top-0 w-px h-full bg-foreground/20" />
-      </motion.div>
-      <motion.div
-        initial={false}
-        animate={isTransitioning ? {
-          x: "100%",
-          transition: { duration: 0.8, delay: 0.3, ease: [0.76, 0, 0.24, 1] }
-        } : { x: "0%" }}
-        className="fixed top-0 right-0 w-1/2 h-full z-[99] pointer-events-none"
-      >
-        <div className="absolute left-0 top-0 w-px h-full bg-foreground/20" />
-      </motion.div>
+      {/* Split curtain lines — only visible during transition */}
+      {isTransitioning && (
+        <>
+          <motion.div
+            initial={{ x: "0%" }}
+            animate={{ x: "-100%" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed top-0 left-0 w-1/2 h-full z-[99] pointer-events-none"
+          >
+            <div className="absolute right-0 top-0 w-px h-full bg-foreground/20" />
+          </motion.div>
+          <motion.div
+            initial={{ x: "0%" }}
+            animate={{ x: "100%" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed top-0 right-0 w-1/2 h-full z-[99] pointer-events-none"
+          >
+            <div className="absolute left-0 top-0 w-px h-full bg-foreground/20" />
+          </motion.div>
+        </>
+      )}
 
       <section className="min-h-screen flex flex-col items-center justify-center px-6 relative">
-        {/* Animated radial glow */}
-        <motion.div
-          animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, hsl(0 0% 15% / 0.2), transparent 70%)" }}
+        {/* Ambient glow */}
+        <div
+          className="hero-glow absolute top-1/3 left-1/2"
+          style={{ top: "33%", left: "50%" }}
+        />
+        <div
+          className="absolute top-1/2 left-1/3 w-[400px] h-[400px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, hsl(220 50% 40% / 0.06), transparent 70%)",
+            animation: "ambientPulse 7s ease-in-out infinite 2s",
+            willChange: "transform, opacity",
+          }}
         />
 
-        {/* Name heading */}
+        {/* Name heading — positioned above the sphere */}
         <motion.div
-          className="absolute top-20 md:top-24 left-0 right-0 pointer-events-none select-none z-10"
-          animate={isTransitioning ? { 
-            opacity: 0, 
-            y: -100, 
+          className="relative z-20 pointer-events-none select-none mb-0"
+          animate={isTransitioning ? {
+            opacity: 0,
+            y: -100,
             filter: "blur(20px)",
             transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
           } : {}}
@@ -126,10 +139,10 @@ const Landing = () => {
           animate="show"
           className="relative z-10 max-w-5xl mx-auto text-center"
         >
-          {/* 3D scene */}
+          {/* 3D scene — overlaps behind heading via negative margin */}
           <motion.div
             variants={scaleIn}
-            className="mb-8"
+            className="-mt-24 md:-mt-32 mb-0 flex justify-center"
             animate={isTransitioning ? {
               scale: 15,
               opacity: 0,
@@ -138,7 +151,9 @@ const Landing = () => {
               transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
             } : {}}
           >
-            <HeroScene />
+            <Suspense fallback={<div style={{ width: "min(90vw,560px)", height: "min(90vw,560px)" }} className="mx-auto" />}>
+              <HeroScene />
+            </Suspense>
           </motion.div>
 
           <motion.p
@@ -160,7 +175,8 @@ const Landing = () => {
             } : {}}
             className="text-xs md:text-sm text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed"
           >
-            I push the boundaries of what's possible with IoT and embedded systems. Designed for innovation, built with precision.
+            I push the boundaries of what's possible with IoT and embedded systems.
+            Designed for innovation, built with precision.
           </motion.p>
 
           <motion.button
@@ -178,7 +194,10 @@ const Landing = () => {
             className="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background text-sm font-medium rounded-full hover:bg-foreground/90 transition-colors cursor-pointer disabled:cursor-default"
           >
             Get Started
-            <motion.span animate={!isTransitioning ? { x: [0, 4, 0] } : {}} transition={{ duration: 1.5, repeat: Infinity }}>
+            <motion.span
+              animate={!isTransitioning ? { x: [0, 4, 0] } : {}}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
               <ArrowRight size={16} />
             </motion.span>
           </motion.button>
@@ -196,7 +215,10 @@ const Landing = () => {
             className="flex items-center gap-2 px-5 py-3 border border-border rounded-xl text-sm text-foreground transition-colors bg-card/50 backdrop-blur-sm cursor-pointer"
           >
             Smart IoT Projects
-            <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+            <motion.span
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
               <ArrowRight size={14} />
             </motion.span>
           </button>
