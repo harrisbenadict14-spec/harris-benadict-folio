@@ -79,11 +79,11 @@ const HeroSection = () => {
         initial="hidden"
         animate="show"
         style={{ scale: heroScale, opacity: heroOpacity }}
-        className="relative z-10 max-w-5xl mx-auto text-center"
+        className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center justify-center"
       >
-        {/* 3D Shape with float + parallax */}
+        {/* 3D Shape with float + parallax — centered */}
         <ParallaxSection speed={0.2}>
-          <motion.div variants={scaleIn} className="mb-8">
+          <motion.div variants={scaleIn} className="mb-8 flex items-center justify-center">
             <HeroScene />
           </motion.div>
         </ParallaxSection>
