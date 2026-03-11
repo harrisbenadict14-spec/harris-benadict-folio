@@ -1,5 +1,7 @@
-import { motion, type Variants, useMotionValue, useSpring } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import { SplitTextReveal } from "./animations/TextReveal";
+import RevealOnScroll from "./animations/RevealOnScroll";
 
 const fromLeft: Variants = {
   hidden: { opacity: 0, x: "-100%", filter: "blur(10px)" },
@@ -37,7 +39,6 @@ const AnimatedNumber = ({ value, suffix = "" }: { value: number; suffix?: string
 
   useEffect(() => {
     if (!inView) return;
-    let start = 0;
     const duration = 1500;
     const startTime = performance.now();
     const animate = (now: number) => {
@@ -52,6 +53,26 @@ const AnimatedNumber = ({ value, suffix = "" }: { value: number; suffix?: string
   return <span ref={ref}>{display}{suffix}</span>;
 };
 
+/* Animated horizontal bar chart */
+const ProgressBar = ({ label, value, delay = 0 }: { label: string; value: number; delay?: number }) => (
+  <div className="space-y-1">
+    <div className="flex justify-between text-[10px] text-muted-foreground">
+      <span>{label}</span>
+      <span>{value}%</span>
+    </div>
+    <div className="h-1 rounded-full bg-secondary overflow-hidden">
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
+        className="h-full rounded-full bg-gradient-to-r from-foreground/30 to-foreground/60 origin-left"
+        style={{ width: `${value}%` }}
+      />
+    </div>
+  </div>
+);
+
 const ProjectsSection = () => (
   <section id="projects" className="py-28 px-6 relative z-10 overflow-hidden">
     {/* Section divider */}
@@ -64,15 +85,11 @@ const ProjectsSection = () => (
     />
 
     <div className="max-w-6xl mx-auto">
-      <motion.p
-        initial={{ opacity: 0, x: -60 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{}}
-        transition={{ duration: 0.6 }}
-        className="text-xs text-muted-foreground uppercase tracking-widest mb-14"
-      >
-        Projects
-      </motion.p>
+      <RevealOnScroll direction="left">
+        <p className="text-xs text-muted-foreground uppercase tracking-widest mb-14">
+          <SplitTextReveal text="Projects" mode="chars" staggerDelay={0.06} />
+        </p>
+      </RevealOnScroll>
 
       {/* Project 1 - Smart Classroom */}
       <motion.div
@@ -88,21 +105,33 @@ const ProjectsSection = () => (
             transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
             className="flex items-center gap-2 mb-4"
           >
-            <span className="w-2 h-2 rounded-full bg-foreground/50" />
+            <motion.span
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-2 h-2 rounded-full bg-foreground/50"
+            />
             <span className="text-xs text-muted-foreground">Featured Project</span>
           </motion.div>
           <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Smart Classroom Automation
+            <SplitTextReveal text="Smart Classroom Automation" mode="words" staggerDelay={0.1} />
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed mb-6">
             An IoT system using RFID, ESP32, IP camera, and face recognition to automate attendance and manage classroom power intelligently.
           </p>
+
+          {/* Progress bars */}
+          <div className="space-y-3 mb-6">
+            <ProgressBar label="Face Recognition" value={95} delay={0.3} />
+            <ProgressBar label="RFID Accuracy" value={99} delay={0.5} />
+            <ProgressBar label="Power Savings" value={40} delay={0.7} />
+          </div>
+
           <motion.div variants={tagStagger} initial="hidden" whileInView="show" className="flex flex-wrap gap-2">
             {["ESP32", "RFID", "Python", "IoT"].map((tag) => (
               <motion.span
                 key={tag}
                 variants={tagPop}
-                whileHover={{ scale: 1.1, y: -2 }}
+                whileHover={{ scale: 1.15, y: -3, boxShadow: "0 4px 12px hsl(220 60% 50% / 0.15)" }}
                 className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground hover:border-foreground/20 hover:text-foreground transition-colors cursor-default"
               >
                 {tag}
@@ -111,11 +140,27 @@ const ProjectsSection = () => (
           </motion.div>
         </motion.div>
 
-        <motion.div variants={fromRight} className="border border-border rounded-2xl p-8 bg-card/40 backdrop-blur-sm">
+        <motion.div variants={fromRight} className="border border-border rounded-2xl p-8 bg-card/40 backdrop-blur-sm relative overflow-hidden group">
+          {/* Shimmer overlay on hover */}
+          <motion.div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+            style={{
+              background: "linear-gradient(105deg, transparent 40%, hsl(220 60% 70% / 0.04) 50%, transparent 60%)",
+              backgroundSize: "200% 100%",
+            }}
+            animate={{ backgroundPosition: ["-100% 0", "200% 0"] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+          />
+
           <div className="text-center mb-6">
-            <p className="text-5xl font-bold text-foreground mb-2">
+            <motion.p
+              initial={{ scale: 0.5, opacity: 0, rotateY: 180 }}
+              whileInView={{ scale: 1, opacity: 1, rotateY: 0 }}
+              transition={{ duration: 1, type: "spring" }}
+              className="text-5xl font-bold text-foreground mb-2"
+            >
               <AnimatedNumber value={95} suffix="%" />
-            </p>
+            </motion.p>
             <p className="text-xs text-muted-foreground">Recognition Accuracy</p>
           </div>
           <motion.div
@@ -132,9 +177,9 @@ const ProjectsSection = () => (
             ].map((item) => (
               <motion.div
                 key={item.val}
-                variants={{ hidden: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1 } }}
-                whileHover={{ scale: 1.05, borderColor: "hsl(0 0% 30%)" }}
-                className="text-center border border-border rounded-xl p-4 transition-colors"
+                variants={{ hidden: { opacity: 0, scale: 0.8, rotateY: -90 }, show: { opacity: 1, scale: 1, rotateY: 0 } }}
+                whileHover={{ scale: 1.08, borderColor: "hsl(0 0% 30%)", y: -3 }}
+                className="text-center border border-border rounded-xl p-4 transition-colors cursor-default"
               >
                 <p className="text-lg font-bold text-foreground">{item.val}</p>
                 <p className="text-[10px] text-muted-foreground">{item.label}</p>
@@ -151,7 +196,18 @@ const ProjectsSection = () => (
         viewport={{ margin: "-80px" }}
         className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-16"
       >
-        <motion.div variants={fromRight} className="border border-border rounded-2xl p-8 bg-card/40 backdrop-blur-sm order-2 md:order-1">
+        <motion.div variants={fromRight} className="border border-border rounded-2xl p-8 bg-card/40 backdrop-blur-sm order-2 md:order-1 relative overflow-hidden group">
+          {/* Shimmer overlay */}
+          <motion.div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+            style={{
+              background: "linear-gradient(105deg, transparent 40%, hsl(220 60% 70% / 0.04) 50%, transparent 60%)",
+              backgroundSize: "200% 100%",
+            }}
+            animate={{ backgroundPosition: ["-100% 0", "200% 0"] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+          />
+
           <div className="text-center mb-6">
             <motion.p
               initial={{ opacity: 0, scale: 0.5, rotateY: 90 }}
@@ -177,9 +233,9 @@ const ProjectsSection = () => (
             ].map((item) => (
               <motion.div
                 key={item.val}
-                variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
-                whileHover={{ scale: 1.05 }}
-                className="text-center border border-border rounded-xl p-4"
+                variants={{ hidden: { opacity: 0, y: 20, rotateX: -30 }, show: { opacity: 1, y: 0, rotateX: 0 } }}
+                whileHover={{ scale: 1.05, y: -3 }}
+                className="text-center border border-border rounded-xl p-4 cursor-default"
               >
                 <p className="text-lg font-bold text-foreground">{item.val}</p>
                 <p className="text-[10px] text-muted-foreground">{item.label}</p>
@@ -187,10 +243,10 @@ const ProjectsSection = () => (
             ))}
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, scaleY: 0 }}
+            whileInView={{ opacity: 1, y: 0, scaleY: 1 }}
             transition={{ delay: 0.6 }}
-            className="mt-6 p-4 border border-border rounded-xl bg-background/50"
+            className="mt-6 p-4 border border-border rounded-xl bg-background/50 origin-top"
           >
             <p className="text-[10px] text-muted-foreground mb-1 uppercase tracking-wider">Core Logic</p>
             <motion.p
@@ -219,24 +275,33 @@ const ProjectsSection = () => (
             transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
             className="flex items-center gap-2 mb-4"
           >
-            <span className="w-2 h-2 rounded-full bg-foreground/50" />
+            <motion.span
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+              className="w-2 h-2 rounded-full bg-foreground/50"
+            />
             <span className="text-xs text-muted-foreground">SaaS Platform</span>
           </motion.div>
           <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            NewsFlux
+            <SplitTextReveal text="NewsFlux" mode="chars" staggerDelay={0.06} />
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed mb-4">
             A multi-tenant SaaS platform designed to digitize newspaper distribution agencies. Manages daily stock, distributor tracking, customer subscriptions, and automated billing.
           </p>
-          <p className="text-xs text-muted-foreground leading-relaxed mb-6">
-            Supports Super Admin, Agency Admin, and Worker roles with full RBAC, offline-friendly data entry, and automated database backups.
-          </p>
+
+          {/* Progress bars */}
+          <div className="space-y-3 mb-6">
+            <ProgressBar label="System Uptime" value={99} delay={0.3} />
+            <ProgressBar label="Billing Automation" value={100} delay={0.5} />
+            <ProgressBar label="Data Recovery" value={98} delay={0.7} />
+          </div>
+
           <motion.div variants={tagStagger} initial="hidden" whileInView="show" className="flex flex-wrap gap-2 mb-6">
             {["FastAPI", "React.js", "PostgreSQL", "Multi-Tenant"].map((tag) => (
               <motion.span
                 key={tag}
                 variants={tagPop}
-                whileHover={{ scale: 1.1, y: -2 }}
+                whileHover={{ scale: 1.15, y: -3, boxShadow: "0 4px 12px hsl(220 60% 50% / 0.15)" }}
                 className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground hover:border-foreground/20 hover:text-foreground transition-colors cursor-default"
               >
                 {tag}
@@ -273,9 +338,9 @@ const ProjectsSection = () => (
           <h3 className="text-base font-semibold text-foreground mb-2">Coming Soon</h3>
           <p className="text-xs text-muted-foreground">More projects on the way — always building.</p>
           <motion.div
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            animate={{ opacity: [0.3, 0.6, 0.3], width: ["40px", "80px", "40px"] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="mt-4 h-1 w-16 rounded-full bg-foreground/20"
+            className="mt-4 h-1 rounded-full bg-foreground/20"
           />
         </motion.div>
         <motion.div
@@ -286,9 +351,9 @@ const ProjectsSection = () => (
           <h3 className="text-base font-semibold text-foreground mb-2">Coming Soon</h3>
           <p className="text-xs text-muted-foreground">Future project placeholder — always learning.</p>
           <motion.div
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            animate={{ opacity: [0.3, 0.6, 0.3], width: ["40px", "80px", "40px"] }}
             transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            className="mt-4 h-1 w-16 rounded-full bg-foreground/20"
+            className="mt-4 h-1 rounded-full bg-foreground/20"
           />
         </motion.div>
       </motion.div>
