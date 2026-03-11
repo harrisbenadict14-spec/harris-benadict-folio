@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AdaptiveDpr, Float } from "@react-three/drei";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import * as THREE from "three";
 
 /* ── GPU Instanced Orbiting Particles ─────────────────────── */
@@ -8,7 +8,6 @@ const OrbitingParticles = ({ count = 28 }: { count?: number }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
-  // Pre-compute all random params once → stable across renders
   const params = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
@@ -114,33 +113,56 @@ const RingParticles = ({ count = 60 }: { count?: number }) => {
   );
 };
 
-/* ── Main Wireframe Icosahedron ───────────────────────────── */
+/* ── Mouse-reactive Main Shape ───────────────────────────── */
 const MainShape = () => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const innerRef = useRef<THREE.Mesh>(null!);
-  const { pointer } = useThree();
+  const groupRef = useRef<THREE.Group>(null!);
+  const { pointer, viewport } = useThree();
+
+  // Smooth mouse target
+  const mouseTarget = useRef({ x: 0, y: 0 });
+  const mouseCurrent = useRef({ x: 0, y: 0 });
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
 
-    // outer wireframe
-    meshRef.current.rotation.y = t * 0.12;
-    meshRef.current.rotation.x = Math.sin(t * 0.08) * 0.15;
-    meshRef.current.rotation.z = THREE.MathUtils.lerp(
-      meshRef.current.rotation.z,
-      pointer.x * 0.3,
-      0.04
-    );
-    meshRef.current.rotation.x += THREE.MathUtils.lerp(0, -pointer.y * 0.2, 0.04);
+    // Update smooth mouse tracking
+    mouseTarget.current.x = pointer.x * viewport.width * 0.15;
+    mouseTarget.current.y = pointer.y * viewport.height * 0.15;
+    mouseCurrent.current.x += (mouseTarget.current.x - mouseCurrent.current.x) * 0.08;
+    mouseCurrent.current.y += (mouseTarget.current.y - mouseCurrent.current.y) * 0.08;
 
-    // inner counter-rotating shape
-    innerRef.current.rotation.y = -t * 0.08;
-    innerRef.current.rotation.x = Math.cos(t * 0.06) * 0.1;
+    // Move entire group toward mouse
+    groupRef.current.position.x = mouseCurrent.current.x;
+    groupRef.current.position.y = mouseCurrent.current.y;
+
+    // Tilt based on mouse velocity
+    const tiltX = (mouseTarget.current.y - mouseCurrent.current.y) * 0.8;
+    const tiltY = (mouseTarget.current.x - mouseCurrent.current.x) * -0.8;
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, tiltX, 0.1);
+    groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, tiltY * 0.5, 0.1);
+
+    // Outer wireframe rotation + mouse influence
+    meshRef.current.rotation.y = t * 0.12 + mouseCurrent.current.x * 0.3;
+    meshRef.current.rotation.x = Math.sin(t * 0.08) * 0.15 + mouseCurrent.current.y * 0.3;
+
+    // Scale pulse on mouse movement
+    const mouseSpeed = Math.sqrt(
+      Math.pow(mouseTarget.current.x - mouseCurrent.current.x, 2) +
+      Math.pow(mouseTarget.current.y - mouseCurrent.current.y, 2)
+    );
+    const scalePulse = 1 + Math.min(mouseSpeed * 0.5, 0.15);
+    meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, scalePulse, 0.1));
+
+    // Inner counter-rotating shape
+    innerRef.current.rotation.y = -t * 0.08 - mouseCurrent.current.x * 0.5;
+    innerRef.current.rotation.x = Math.cos(t * 0.06) * 0.1 - mouseCurrent.current.y * 0.5;
   });
 
   return (
-    <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
-      <group>
+    <Float speed={1.2} rotationIntensity={0.1} floatIntensity={0.3}>
+      <group ref={groupRef}>
         {/* Outer wireframe */}
         <mesh ref={meshRef}>
           <icosahedronGeometry args={[1.5, 1]} />
@@ -177,6 +199,19 @@ const MainShape = () => {
   );
 };
 
+/* ── Mouse-reactive Light ────────────────────────────────── */
+const MouseLight = () => {
+  const lightRef = useRef<THREE.PointLight>(null!);
+  const { pointer, viewport } = useThree();
+
+  useFrame(() => {
+    lightRef.current.position.x = pointer.x * viewport.width * 0.5;
+    lightRef.current.position.y = pointer.y * viewport.height * 0.5;
+  });
+
+  return <pointLight ref={lightRef} position={[0, 0, 3]} intensity={0.4} color="#aabbff" />;
+};
+
 /* ── Scene ────────────────────────────────────────────────── */
 const Scene = () => (
   <>
@@ -184,6 +219,7 @@ const Scene = () => (
     <pointLight position={[5, 5, 5]} intensity={0.3} color="#ffffff" />
     <pointLight position={[-4, -3, 3]} intensity={0.15} color="#8090ff" />
     <pointLight position={[0, 3, -2]} intensity={0.1} color="#aaaaff" />
+    <MouseLight />
 
     <MainShape />
     <OrbitingParticles count={28} />
