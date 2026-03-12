@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import CursorGlow from "@/components/CursorGlow";
 import ParticleField from "@/components/ParticleField";
 import ScrollProgress from "@/components/animations/ScrollProgress";
+import BackToTop from "@/components/BackToTop";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <ScrollProgress />
       <CursorGlow />
       <ParticleField />
+      <BackToTop />
       <Navbar />
       <AboutSection />
       <SkillsSection />

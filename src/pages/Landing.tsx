@@ -157,7 +157,7 @@ const Landing = () => {
               whileHover={{ scale: 1.05, borderColor: "hsl(var(--foreground) / 0.3)" }}
             >
               <motion.div
-                className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                className="w-1.5 h-1.5 rounded-full bg-[hsl(142_69%_58%)]"
                 animate={{ opacity: [1, 0.3, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
