@@ -118,46 +118,42 @@ const MainShape = () => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const innerRef = useRef<THREE.Mesh>(null!);
   const groupRef = useRef<THREE.Group>(null!);
-  const { pointer, viewport } = useThree();
+  const { pointer } = useThree();
 
-  // Smooth mouse target
-  const mouseTarget = useRef({ x: 0, y: 0 });
-  const mouseCurrent = useRef({ x: 0, y: 0 });
+  // Smooth mouse tracking for rotation only
+  const mouseSmooth = useRef({ x: 0, y: 0 });
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
 
-    // Update smooth mouse tracking
-    mouseTarget.current.x = pointer.x * viewport.width * 0.15;
-    mouseTarget.current.y = pointer.y * viewport.height * 0.15;
-    mouseCurrent.current.x += (mouseTarget.current.x - mouseCurrent.current.x) * 0.08;
-    mouseCurrent.current.y += (mouseTarget.current.y - mouseCurrent.current.y) * 0.08;
+    // Smooth interpolation toward pointer
+    mouseSmooth.current.x += (pointer.x - mouseSmooth.current.x) * 0.05;
+    mouseSmooth.current.y += (pointer.y - mouseSmooth.current.y) * 0.05;
 
-    // Move entire group toward mouse
-    groupRef.current.position.x = mouseCurrent.current.x;
-    groupRef.current.position.y = mouseCurrent.current.y;
-
-    // Tilt based on mouse velocity
-    const tiltX = (mouseTarget.current.y - mouseCurrent.current.y) * 0.8;
-    const tiltY = (mouseTarget.current.x - mouseCurrent.current.x) * -0.8;
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, tiltX, 0.1);
-    groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, tiltY * 0.5, 0.1);
-
-    // Outer wireframe rotation + mouse influence
-    meshRef.current.rotation.y = t * 0.12 + mouseCurrent.current.x * 0.3;
-    meshRef.current.rotation.x = Math.sin(t * 0.08) * 0.15 + mouseCurrent.current.y * 0.3;
-
-    // Scale pulse on mouse movement
-    const mouseSpeed = Math.sqrt(
-      Math.pow(mouseTarget.current.x - mouseCurrent.current.x, 2) +
-      Math.pow(mouseTarget.current.y - mouseCurrent.current.y, 2)
+    // Group stays at origin — only rotates based on mouse direction
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(
+      groupRef.current.rotation.y,
+      mouseSmooth.current.x * 0.4,
+      0.08
     );
-    const scalePulse = 1 + Math.min(mouseSpeed * 0.5, 0.15);
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(
+      groupRef.current.rotation.x,
+      -mouseSmooth.current.y * 0.3,
+      0.08
+    );
+
+    // Outer wireframe slow auto-rotation + subtle mouse influence
+    meshRef.current.rotation.y = t * 0.1 + mouseSmooth.current.x * 0.15;
+    meshRef.current.rotation.x = Math.sin(t * 0.08) * 0.15 + mouseSmooth.current.y * 0.1;
+
+    // Subtle scale pulse based on mouse movement speed
+    const mouseSpeed = Math.abs(pointer.x - mouseSmooth.current.x) + Math.abs(pointer.y - mouseSmooth.current.y);
+    const scalePulse = 1 + Math.min(mouseSpeed * 0.3, 0.08);
     meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, scalePulse, 0.1));
 
     // Inner counter-rotating shape
-    innerRef.current.rotation.y = -t * 0.08 - mouseCurrent.current.x * 0.5;
-    innerRef.current.rotation.x = Math.cos(t * 0.06) * 0.1 - mouseCurrent.current.y * 0.5;
+    innerRef.current.rotation.y = -t * 0.08 - mouseSmooth.current.x * 0.2;
+    innerRef.current.rotation.x = Math.cos(t * 0.06) * 0.1 + mouseSmooth.current.y * 0.2;
   });
 
   return (
