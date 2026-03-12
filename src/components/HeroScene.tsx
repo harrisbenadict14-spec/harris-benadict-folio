@@ -198,11 +198,12 @@ const MainShape = () => {
 /* ── Mouse-reactive Light ────────────────────────────────── */
 const MouseLight = () => {
   const lightRef = useRef<THREE.PointLight>(null!);
-  const { pointer, viewport } = useThree();
+  const { pointer } = useThree();
 
   useFrame(() => {
-    lightRef.current.position.x = pointer.x * viewport.width * 0.5;
-    lightRef.current.position.y = pointer.y * viewport.height * 0.5;
+    // Light orbits subtly around center based on mouse, stays close
+    lightRef.current.position.x = pointer.x * 2;
+    lightRef.current.position.y = pointer.y * 2;
   });
 
   return <pointLight ref={lightRef} position={[0, 0, 3]} intensity={0.4} color="#aabbff" />;
