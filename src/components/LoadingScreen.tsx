@@ -98,7 +98,7 @@ const LoadingScreen = () => {
 
   useEffect(() => {
     // Wait for fonts + a minimum display time
-    const minWait = new Promise((r) => setTimeout(r, 1800));
+    const minWait = new Promise((r) => setTimeout(r, 600));
     const fonts = document.fonts?.ready ?? Promise.resolve();
     Promise.all([minWait, fonts]).then(done);
   }, [done]);

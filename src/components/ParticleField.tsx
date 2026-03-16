@@ -8,8 +8,9 @@ import * as THREE from "three";
  * JS position updates.
  */
 
-const PARTICLE_COUNT = 200;
-const SHOOTING_STAR_COUNT = 4;
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+const PARTICLE_COUNT = isMobile ? 80 : 200;
+const SHOOTING_STAR_COUNT = isMobile ? 2 : 4;
 
 /* ── Vertex shader ────────────────────────────────────────── */
 const particleVertex = /* glsl */ `

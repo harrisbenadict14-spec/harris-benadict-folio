@@ -4,7 +4,9 @@ import { useRef, useMemo, useEffect } from "react";
 import * as THREE from "three";
 
 /* ── GPU Instanced Orbiting Particles ─────────────────────── */
-const OrbitingParticles = ({ count = 28 }: { count?: number }) => {
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+const OrbitingParticles = ({ count = isMobile ? 14 : 28 }: { count?: number }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
@@ -45,7 +47,7 @@ const OrbitingParticles = ({ count = 28 }: { count?: number }) => {
 };
 
 /* ── Floating Ring Particles (secondary layer) ────────────── */
-const RingParticles = ({ count = 60 }: { count?: number }) => {
+const RingParticles = ({ count = isMobile ? 30 : 60 }: { count?: number }) => {
   const ref = useRef<THREE.Points>(null!);
 
   const [positions, sizes] = useMemo(() => {
@@ -243,7 +245,7 @@ const HeroScene = () => (
     <Canvas
       camera={{ position: [0, 0, 5.5], fov: 42 }}
       style={{ width: "100%", height: "100%", background: "transparent" }}
-      dpr={[1, 2]}
+      dpr={[1, isMobile ? 1.5 : 2]}
       gl={{
         antialias: true,
         alpha: true,
