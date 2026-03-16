@@ -4,7 +4,9 @@ import { useRef, useMemo, useEffect } from "react";
 import * as THREE from "three";
 
 /* ── GPU Instanced Orbiting Particles ─────────────────────── */
-const OrbitingParticles = ({ count = 28 }: { count?: number }) => {
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+const OrbitingParticles = ({ count = isMobile ? 14 : 28 }: { count?: number }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
