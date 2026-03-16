@@ -47,7 +47,7 @@ const OrbitingParticles = ({ count = isMobile ? 14 : 28 }: { count?: number }) =
 };
 
 /* ── Floating Ring Particles (secondary layer) ────────────── */
-const RingParticles = ({ count = 60 }: { count?: number }) => {
+const RingParticles = ({ count = isMobile ? 30 : 60 }: { count?: number }) => {
   const ref = useRef<THREE.Points>(null!);
 
   const [positions, sizes] = useMemo(() => {
