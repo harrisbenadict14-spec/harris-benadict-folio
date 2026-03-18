@@ -326,7 +326,6 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
             />
           )}
         </motion.div>
-      )}
     </AnimatePresence>
   );
 };
