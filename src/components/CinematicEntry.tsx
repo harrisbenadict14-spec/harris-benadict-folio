@@ -308,8 +308,8 @@ const CinematicEntry = ({ onComplete }: { onComplete: () => void }) => {
 
   return (
     <AnimatePresence>
-      {phase !== "done" && (
-        <motion.div
+      <motion.div
+        key="cinematic"
           className="fixed inset-0 z-[200] bg-background"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
