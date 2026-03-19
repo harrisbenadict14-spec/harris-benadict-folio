@@ -3,6 +3,7 @@ import { Float } from "@react-three/drei";
 import { useRef, useMemo, useEffect, useState } from "react";
 import * as THREE from "three";
 import NameFormation from "./NameFormation";
+import UniverseEffect from "./UniverseEffect";
 
 /* ── GPU Instanced Orbiting Particles ─────────────────────── */
 const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -251,6 +252,7 @@ const Scene = () => {
 
   return (
     <>
+      <UniverseEffect intensity={0.7} />
       <ambientLight intensity={0.15} />
       <pointLight position={[5, 5, 5]} intensity={0.3} color="#ffffff" />
       <pointLight position={[-4, -3, 3]} intensity={0.15} color="#8090ff" />
