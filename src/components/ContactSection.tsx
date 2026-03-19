@@ -6,7 +6,7 @@ import MagneticButton from "./animations/MagneticButton";
 
 const links = [
   { icon: Mail, label: "Email", href: "mailto:harrisbenadict14@gmail.com", text: "harrisbenadict14@gmail.com" },
-  { icon: Github, label: "GitHub", href: "https://github.com/harrisbenadict", text: "github.com/harrisbenadict" },
+  { icon: Github, label: "GitHub", href: "https://github.com/harrisbenadict14-spec", text: "github.com/harrisbenadict14-spec" },
   { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/harrisbenadict", text: "linkedin.com/in/harrisbenadict" },
 ];
 

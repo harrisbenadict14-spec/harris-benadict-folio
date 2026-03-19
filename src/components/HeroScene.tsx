@@ -1,12 +1,14 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { AdaptiveDpr, Float } from "@react-three/drei";
-import { useRef, useMemo, useEffect } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { Float } from "@react-three/drei";
+import { useRef, useMemo, useEffect, useState } from "react";
 import * as THREE from "three";
+import NameFormation from "./NameFormation";
 
 /* ── GPU Instanced Orbiting Particles ─────────────────────── */
 const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+const isLowEnd = typeof window !== 'undefined' && navigator.hardwareConcurrency <= 4;
 
-const OrbitingParticles = ({ count = isMobile ? 14 : 28 }: { count?: number }) => {
+const OrbitingParticles = ({ count = isMobile ? 8 : isLowEnd ? 14 : 20 }: { count?: number }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
@@ -47,7 +49,7 @@ const OrbitingParticles = ({ count = isMobile ? 14 : 28 }: { count?: number }) =
 };
 
 /* ── Floating Ring Particles (secondary layer) ────────────── */
-const RingParticles = ({ count = isMobile ? 30 : 60 }: { count?: number }) => {
+const RingParticles = ({ count = isMobile ? 15 : isLowEnd ? 25 : 35 }: { count?: number }) => {
   const ref = useRef<THREE.Points>(null!);
 
   const [positions, sizes] = useMemo(() => {
@@ -212,52 +214,67 @@ const MouseLight = () => {
 };
 
 /* ── Scene ────────────────────────────────────────────────── */
-const Scene = () => (
-  <>
-    <ambientLight intensity={0.15} />
-    <pointLight position={[5, 5, 5]} intensity={0.3} color="#ffffff" />
-    <pointLight position={[-4, -3, 3]} intensity={0.15} color="#8090ff" />
-    <pointLight position={[0, 3, -2]} intensity={0.1} color="#aaaaff" />
-    <MouseLight />
+const Scene = () => {
+  const [nameFormationActive, setNameFormationActive] = useState(false);
+  const [formationProgress, setFormationProgress] = useState(0);
+  const scrollProgress = useRef(0);
+  const startTime = useRef(Date.now());
 
-    <MainShape />
-    <OrbitingParticles count={28} />
-    <RingParticles count={60} />
+  // Track scroll progress and time to trigger name formation
+  useFrame(() => {
+    if (typeof window !== 'undefined') {
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentScroll = Math.min(scrollY / maxScroll, 1);
 
-    <AdaptiveDpr pixelated />
-  </>
-);
+      // Time-based trigger (starts after 3 seconds)
+      const elapsedTime = (Date.now() - startTime.current) / 1000;
+      const timeProgress = Math.min((elapsedTime - 3) / 4, 1); // 4 second transition
 
-/* ── Exported Component ───────────────────────────────────── */
+      scrollProgress.current = currentScroll;
+
+      // Trigger name formation with either scroll OR time
+      const shouldActivate = currentScroll > 0.1 || elapsedTime > 3;
+
+      if (shouldActivate) {
+        setNameFormationActive(true);
+        // Use whichever progress is greater
+        const scrollZoneProgress = currentScroll > 0.1 ? Math.min((currentScroll - 0.1) / 0.5, 1) : 0;
+        const finalProgress = Math.max(scrollZoneProgress, timeProgress);
+        setFormationProgress(finalProgress);
+      } else {
+        setNameFormationActive(false);
+        setFormationProgress(0);
+      }
+    }
+  });
+
+  return (
+    <>
+      <ambientLight intensity={0.15} />
+      <pointLight position={[5, 5, 5]} intensity={0.3} color="#ffffff" />
+      <pointLight position={[-4, -3, 3]} intensity={0.15} color="#8090ff" />
+      <pointLight position={[0, 3, -2]} intensity={0.1} color="#aaaaff" />
+      <MouseLight />
+
+      <MainShape />
+      <OrbitingParticles count={28} />
+      <RingParticles count={60} />
+
+      {/* Name formation overlay */}
+      <NameFormation 
+        isActive={nameFormationActive} 
+        progress={formationProgress} 
+      />
+    </>
+  );
+};
+
+/* Exported Scene Component */
 const HeroScene = () => (
-  <div
-    className="mx-auto"
-    aria-hidden="true"
-    style={{
-      width: "min(90vw, 560px)",
-      height: "min(90vw, 560px)",
-      WebkitMaskImage:
-        "radial-gradient(ellipse 50% 50% at 50% 50%, black 20%, transparent 70%)",
-      maskImage:
-        "radial-gradient(ellipse 50% 50% at 50% 50%, black 20%, transparent 70%)",
-    }}
-  >
-    <Canvas
-      camera={{ position: [0, 0, 5.5], fov: 42 }}
-      style={{ width: "100%", height: "100%", background: "transparent" }}
-      dpr={[1, isMobile ? 1.5 : 2]}
-      gl={{
-        antialias: true,
-        alpha: true,
-        powerPreference: "high-performance",
-      }}
-      onCreated={({ gl }) => {
-        gl.setClearColor(0x000000, 0);
-      }}
-    >
-      <Scene />
-    </Canvas>
-  </div>
+  <>
+    <Scene />
+  </>
 );
 
 export default HeroScene;

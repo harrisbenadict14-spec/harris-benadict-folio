@@ -2,6 +2,9 @@ import { motion, type Variants } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { SplitTextReveal } from "./animations/TextReveal";
 import RevealOnScroll from "./animations/RevealOnScroll";
+import MagneticButton from "./animations/MagneticButton";
+import RippleButton from "./animations/RippleButton";
+import { Github, ExternalLink } from "lucide-react";
 
 const fromLeft: Variants = {
   hidden: { opacity: 0, x: "-100%", filter: "blur(10px)" },
@@ -126,7 +129,7 @@ const ProjectsSection = () => (
             <ProgressBar label="Power Savings" value={40} delay={0.7} />
           </div>
 
-          <motion.div variants={tagStagger} initial="hidden" whileInView="show" className="flex flex-wrap gap-2">
+          <motion.div variants={tagStagger} initial="hidden" whileInView="show" className="flex flex-wrap gap-2 mb-6">
             {["ESP32", "RFID", "Python", "IoT"].map((tag) => (
               <motion.span
                 key={tag}
@@ -138,6 +141,18 @@ const ProjectsSection = () => (
               </motion.span>
             ))}
           </motion.div>
+
+          {/* GitHub Link Button */}
+          <MagneticButton strength={0.2}>
+            <RippleButton
+              onClick={() => window.open("https://github.com/harrisbenadict14-spec/smart-classroom-automation", "_blank")}
+              className="inline-flex items-center gap-2 px-6 py-2.5 border border-border/60 text-foreground/80 text-sm font-medium rounded-full hover:border-foreground/30 hover:text-foreground transition-all cursor-pointer backdrop-blur-sm group"
+            >
+              <Github size={16} className="group-hover:rotate-12 transition-transform duration-300" />
+              View Code
+              <ExternalLink size={14} className="opacity-60" />
+            </RippleButton>
+          </MagneticButton>
         </motion.div>
 
         <motion.div variants={fromRight} className="border border-border rounded-2xl p-8 bg-card/40 backdrop-blur-sm relative overflow-hidden group">
@@ -308,6 +323,19 @@ const ProjectsSection = () => (
               </motion.span>
             ))}
           </motion.div>
+
+          {/* GitHub Link Button */}
+          <MagneticButton strength={0.2}>
+            <RippleButton
+              onClick={() => window.open("https://github.com/harrisbenadict14-spec/newsflux-saas", "_blank")}
+              className="inline-flex items-center gap-2 px-6 py-2.5 border border-border/60 text-foreground/80 text-sm font-medium rounded-full hover:border-foreground/30 hover:text-foreground transition-all cursor-pointer backdrop-blur-sm group mb-6"
+            >
+              <Github size={16} className="group-hover:rotate-12 transition-transform duration-300" />
+              View Code
+              <ExternalLink size={14} className="opacity-60" />
+            </RippleButton>
+          </MagneticButton>
+
           <motion.div variants={tagStagger} initial="hidden" whileInView="show" className="flex flex-wrap gap-2">
             {["SaaS Design", "API Development", "DB Architecture", "Automated Billing"].map((skill) => (
               <motion.span

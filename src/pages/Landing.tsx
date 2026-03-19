@@ -6,7 +6,7 @@ import MagneticButton from "@/components/animations/MagneticButton";
 import RippleButton from "@/components/animations/RippleButton";
 import CinematicEntry from "@/components/CinematicEntry";
 
-const HeroScene = lazy(() => import("@/components/HeroScene"));
+const HeroScene = lazy(() => import("@/components/LazyHeroScene"));
 const ParticleField = lazy(() => import("@/components/ParticleField"));
 const CursorGlow = lazy(() => import("@/components/CursorGlow"));
 
