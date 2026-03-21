@@ -1,10 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
 
-/**
- * GPU-composited cursor glow — uses refs + translate3d so the
- * browser promotes the layer to a GPU texture. Zero React
- * re-renders per mousemove event.
- */
 const CursorGlow = () => {
   const glowRef = useRef<HTMLDivElement>(null);
   const posRef = useRef({ x: -400, y: -400 });
@@ -21,18 +16,14 @@ const CursorGlow = () => {
 
   useEffect(() => {
     const schedule = () => {
-      if (!rafRef.current) {
-        rafRef.current = requestAnimationFrame(syncPosition);
-      }
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(syncPosition);
     };
-
     const onMove = (e: MouseEvent) => {
       posRef.current.x = e.clientX;
       posRef.current.y = e.clientY;
       if (!visibleRef.current) visibleRef.current = true;
       schedule();
     };
-
     const onLeave = () => { visibleRef.current = false; schedule(); };
     const onEnter = () => { visibleRef.current = true; schedule(); };
 
@@ -40,7 +31,6 @@ const CursorGlow = () => {
     document.addEventListener("mouseleave", onLeave);
     document.addEventListener("mouseenter", onEnter);
 
-    // hide on touch devices
     const mq = window.matchMedia("(pointer: fine)");
     if (!mq.matches && glowRef.current) glowRef.current.style.display = "none";
 
@@ -62,8 +52,7 @@ const CursorGlow = () => {
         opacity: 0,
         transition: "opacity 0.3s ease",
         background:
-          "radial-gradient(circle, hsl(220 60% 70% / 0.06) 0%, hsl(0 0% 100% / 0.03) 30%, transparent 65%)",
-        // Force GPU layer
+          "radial-gradient(circle, hsl(var(--glow-blue) / 0.07) 0%, hsl(var(--glow-purple) / 0.04) 30%, transparent 65%)",
         transform: "translate3d(-400px, -400px, 0)",
         backfaceVisibility: "hidden",
       }}

@@ -9,11 +9,13 @@ const RippleButton = ({
   className = "",
   onClick,
   href,
+  style,
 }: {
   children: ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e?: MouseEvent<HTMLElement>) => void;
   href?: string;
+  style?: React.CSSProperties;
 }) => {
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
 
@@ -34,6 +36,7 @@ const RippleButton = ({
       href={href}
       onClick={handleClick}
       className={`relative overflow-hidden ${className}`}
+      style={style}
     >
       <AnimatePresence>
         {ripples.map((ripple) => (

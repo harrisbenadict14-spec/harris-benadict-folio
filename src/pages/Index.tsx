@@ -8,6 +8,7 @@ import CursorGlow from "@/components/CursorGlow";
 import ParticleField from "@/components/ParticleField";
 import ScrollProgress from "@/components/animations/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
+import JarvisAssistant from "@/components/JarvisAssistant";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
       <ProjectsSection />
       <ContactSection />
       <Footer />
+      <JarvisAssistant />
     </div>
   );
 };
