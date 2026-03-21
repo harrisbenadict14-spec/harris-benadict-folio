@@ -207,7 +207,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
             {project.github && (
               <MagneticButton strength={0.2}>
                 <RippleButton
-                  onClick={(e) => { e.stopPropagation(); window.open(project.github, "_blank"); }}
+                  onClick={(e?: any) => { e?.stopPropagation(); window.open(project.github, "_blank"); }}
                   className="inline-flex items-center gap-1.5 px-4 py-2 border border-border/60 text-foreground/80 text-xs font-medium rounded-full hover:border-primary/40 hover:text-primary transition-all cursor-pointer backdrop-blur-sm"
                 >
                   <Github size={14} />
