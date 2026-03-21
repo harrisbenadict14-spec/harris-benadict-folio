@@ -36,6 +36,7 @@ const RippleButton = ({
       href={href}
       onClick={handleClick}
       className={`relative overflow-hidden ${className}`}
+      style={style}
     >
       <AnimatePresence>
         {ripples.map((ripple) => (
