@@ -1,16 +1,13 @@
-Portfolio design system with electric blue/neon purple accent theme
+# Memory: index.md
+Updated: now
 
 # Design System
-- Primary: electric blue (220 90% 56%)
-- Accent: neon purple (265 80% 55%)
-- Glow cyan: (190 90% 55%)
+- Name font: Cormorant Garamond (elegant serif, italic, semibold)
 - Body font: Inter
 - Mono font: JetBrains Mono
-- Theme: Dark (bg 220 20% 4%)
-- Glassmorphism cards with .glass-card utility
-- .text-gradient for blue-purple gradient text
-- .glow-border for hover glow borders
-- Jarvis AI assistant: floating chat bot bottom-right
-- Hero: left text + right 3D sphere layout
-- Scroll animations: left/right slide-to-center with RevealOnScroll
-- Name: "Harris Benedict" (not Benadict)
+- Theme: Black glassmorphism (bg 0 0% 3%, fg 0 0% 95%) — NO blue/purple accents
+- Glow tokens: monochrome white only (--glow-blue/purple/cyan all grayscale)
+- Buttons: bg-foreground text-background (white on black)
+- Glass cards: bg hsl(0 0% 6% / 0.4) with backdrop-blur-xl
+- Hero name uses whileInView with once:false for scroll replay
+- User explicitly rejected blue theme — keep pure black/white
