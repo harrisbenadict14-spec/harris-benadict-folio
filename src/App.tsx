@@ -55,11 +55,13 @@ const App = () => {
             <Toaster />
             <Sonner />
             <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/portfolio" element={<Index />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <PageTransition>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/portfolio" element={<Index />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </PageTransition>
             </BrowserRouter>
           </TooltipProvider>
         </QueryClientProvider>
