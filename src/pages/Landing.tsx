@@ -32,7 +32,7 @@ const Landing = () => {
 
   const handleExplore = () => {
     setIsTransitioning(true);
-    setTimeout(() => navigate("/portfolio"), 1200);
+    setTimeout(() => navigate("/portfolio"), 400);
   };
 
   return (
