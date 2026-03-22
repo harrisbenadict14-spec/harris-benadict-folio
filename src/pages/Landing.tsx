@@ -49,29 +49,26 @@ const Landing = () => {
           scaleY: 1,
           transition: { duration: 0.6, delay: 0.4, ease: [0.76, 0, 0.24, 1] }
         } : { scaleY: 0 }}
-        className="fixed inset-0 z-[100] origin-bottom"
-        style={{
-          pointerEvents: "none",
-          background: "linear-gradient(to top, hsl(var(--glow-blue)), hsl(var(--glow-purple)))",
-        }}
+        className="fixed inset-0 z-[100] origin-bottom bg-background"
+        style={{ pointerEvents: "none" }}
       />
 
       <section ref={sectionRef} className="min-h-screen flex items-center px-6 md:px-12 lg:px-20 relative">
-        {/* Ambient glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none opacity-20"
-          style={{ background: "radial-gradient(circle, hsl(var(--glow-blue) / 0.15), transparent 70%)", filter: "blur(80px)" }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full pointer-events-none opacity-15"
-          style={{ background: "radial-gradient(circle, hsl(var(--glow-purple) / 0.12), transparent 70%)", filter: "blur(80px)" }} />
+        {/* Ambient glow orbs — monochrome */}
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none opacity-15"
+          style={{ background: "radial-gradient(circle, hsl(0 0% 100% / 0.08), transparent 70%)", filter: "blur(80px)" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full pointer-events-none opacity-10"
+          style={{ background: "radial-gradient(circle, hsl(0 0% 100% / 0.06), transparent 70%)", filter: "blur(80px)" }} />
 
         {/* Grid overlay */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={entryDone ? { opacity: 0.015 } : {}}
+          animate={entryDone ? { opacity: 0.012 } : {}}
           transition={{ duration: 2 }}
           className="absolute inset-0 pointer-events-none z-[1]"
           style={{
-            backgroundImage: `linear-gradient(hsl(var(--glow-blue) / 0.08) 1px, transparent 1px),
-                             linear-gradient(90deg, hsl(var(--glow-blue) / 0.08) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px),
+                             linear-gradient(90deg, hsl(0 0% 100% / 0.04) 1px, transparent 1px)`,
             backgroundSize: "80px 80px",
           }}
         />
@@ -135,11 +132,7 @@ const Landing = () => {
               <MagneticButton strength={0.4}>
                 <RippleButton
                   onClick={handleExplore}
-                  className="inline-flex items-center gap-2 px-7 py-3 text-sm font-semibold rounded-full text-primary-foreground cursor-pointer transition-all"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))",
-                    boxShadow: "0 0 30px hsl(var(--glow-blue) / 0.3)",
-                  }}
+                  className="inline-flex items-center gap-2 px-7 py-3 text-sm font-semibold rounded-full bg-foreground text-background cursor-pointer transition-all hover:bg-foreground/90"
                 >
                   View Projects
                   <motion.span animate={!isTransitioning ? { x: [0, 4, 0] } : {}} transition={{ duration: 1.5, repeat: Infinity }}>
@@ -151,7 +144,7 @@ const Landing = () => {
               <MagneticButton strength={0.3}>
                 <RippleButton
                   onClick={() => navigate("/portfolio")}
-                  className="inline-flex items-center gap-2 px-7 py-3 border border-border/60 text-foreground/80 text-sm font-medium rounded-full hover:border-primary/40 hover:text-foreground transition-all cursor-pointer backdrop-blur-sm"
+                  className="inline-flex items-center gap-2 px-7 py-3 border border-border/60 text-foreground/80 text-sm font-medium rounded-full hover:border-foreground/30 hover:text-foreground transition-all cursor-pointer backdrop-blur-sm"
                 >
                   Contact Me
                   <ArrowDown size={14} className="opacity-60" />
@@ -177,7 +170,7 @@ const Landing = () => {
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: "radial-gradient(circle, hsl(var(--glow-blue) / 0.12) 0%, hsl(var(--glow-purple) / 0.06) 40%, transparent 70%)",
+                background: "radial-gradient(circle, hsl(0 0% 100% / 0.06) 0%, hsl(0 0% 80% / 0.03) 40%, transparent 70%)",
                 filter: "blur(40px)",
               }}
             />
@@ -196,7 +189,7 @@ const Landing = () => {
         >
           <span className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground/50 font-mono-code">Scroll</span>
           <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-            <ChevronDown size={16} className="text-primary/50" />
+            <ChevronDown size={16} className="text-foreground/30" />
           </motion.div>
         </motion.div>
 
@@ -206,14 +199,14 @@ const Landing = () => {
           animate={entryDone ? { scaleY: 1 } : {}}
           transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] }}
           className="absolute left-6 top-1/4 bottom-1/4 w-px origin-top hidden lg:block"
-          style={{ background: "linear-gradient(to bottom, transparent, hsl(var(--glow-blue) / 0.2), transparent)" }}
+          style={{ background: "linear-gradient(to bottom, transparent, hsl(0 0% 100% / 0.1), transparent)" }}
         />
         <motion.div
           initial={{ scaleY: 0 }}
           animate={entryDone ? { scaleY: 1 } : {}}
           transition={{ duration: 1.5, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="absolute right-6 top-1/4 bottom-1/4 w-px origin-bottom hidden lg:block"
-          style={{ background: "linear-gradient(to bottom, transparent, hsl(var(--glow-purple) / 0.2), transparent)" }}
+          style={{ background: "linear-gradient(to bottom, transparent, hsl(0 0% 100% / 0.08), transparent)" }}
         />
       </section>
     </div>

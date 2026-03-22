@@ -36,7 +36,7 @@ const OrbitingParticles = ({ count = isMobile ? 8 : 20 }: { count?: number }) =>
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <sphereGeometry args={[1, 8, 8]} />
-      <meshBasicMaterial color="#4d8eff" transparent opacity={0.6} />
+      <meshBasicMaterial color="#cccccc" transparent opacity={0.5} />
     </instancedMesh>
   );
 };
@@ -76,7 +76,7 @@ const RingParticles = ({ count = isMobile ? 15 : 35 }: { count?: number }) => {
           float pulse = 0.7 + 0.3 * sin(uTime * 1.5 + position.x * 3.0);
           gl_PointSize = aSize * pulse * (200.0 / -mv.z);
           gl_Position = projectionMatrix * mv;
-          vAlpha = pulse * 0.35;
+          vAlpha = pulse * 0.3;
         }
       `,
       fragmentShader: `
@@ -84,7 +84,7 @@ const RingParticles = ({ count = isMobile ? 15 : 35 }: { count?: number }) => {
         void main() {
           float d = length(gl_PointCoord - 0.5) * 2.0;
           float a = (1.0 - smoothstep(0.0, 1.0, d)) * vAlpha;
-          gl_FragColor = vec4(0.3, 0.55, 1.0, a);
+          gl_FragColor = vec4(1.0, 1.0, 1.0, a);
         }
       `,
       transparent: true,
@@ -141,15 +141,15 @@ const MainShape = () => {
       <group ref={groupRef}>
         <mesh ref={meshRef}>
           <icosahedronGeometry args={[1.5, 1]} />
-          <meshStandardMaterial color="#4d8eff" wireframe transparent opacity={0.25} emissive="#4d8eff" emissiveIntensity={0.08} />
+          <meshStandardMaterial color="#ffffff" wireframe transparent opacity={0.18} emissive="#ffffff" emissiveIntensity={0.05} />
         </mesh>
         <mesh ref={innerRef}>
           <icosahedronGeometry args={[0.6, 0]} />
-          <meshStandardMaterial color="#8b5cf6" wireframe transparent opacity={0.15} emissive="#8b5cf6" emissiveIntensity={0.12} />
+          <meshStandardMaterial color="#aaaaaa" wireframe transparent opacity={0.12} emissive="#cccccc" emissiveIntensity={0.08} />
         </mesh>
         <mesh>
           <sphereGeometry args={[0.2, 16, 16]} />
-          <meshBasicMaterial color="#60a5fa" transparent opacity={0.06} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.04} />
         </mesh>
       </group>
     </Float>
@@ -164,16 +164,16 @@ const MouseLight = () => {
     lightRef.current.position.x = pointer.x * 2;
     lightRef.current.position.y = pointer.y * 2;
   });
-  return <pointLight ref={lightRef} position={[0, 0, 3]} intensity={0.5} color="#4d8eff" />;
+  return <pointLight ref={lightRef} position={[0, 0, 3]} intensity={0.4} color="#ffffff" />;
 };
 
 /* ── Scene ────────────────────────────────────── */
 const Scene = () => (
   <>
-    <ambientLight intensity={0.12} />
-    <pointLight position={[5, 5, 5]} intensity={0.3} color="#4d8eff" />
-    <pointLight position={[-4, -3, 3]} intensity={0.2} color="#8b5cf6" />
-    <pointLight position={[0, 3, -2]} intensity={0.1} color="#60a5fa" />
+    <ambientLight intensity={0.1} />
+    <pointLight position={[5, 5, 5]} intensity={0.25} color="#ffffff" />
+    <pointLight position={[-4, -3, 3]} intensity={0.15} color="#cccccc" />
+    <pointLight position={[0, 3, -2]} intensity={0.1} color="#eeeeee" />
     <MouseLight />
     <MainShape />
     <OrbitingParticles count={isMobile ? 10 : 24} />

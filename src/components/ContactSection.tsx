@@ -28,7 +28,7 @@ const ContactSection = () => (
       viewport={{ once: true }}
       transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
       className="absolute top-0 left-[10%] right-[10%] h-px origin-center"
-      style={{ background: "linear-gradient(90deg, transparent, hsl(var(--glow-blue) / 0.3), hsl(var(--glow-purple) / 0.3), transparent)" }}
+      style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.12), transparent)" }}
     />
 
     <div className="max-w-6xl mx-auto">
@@ -38,7 +38,7 @@ const ContactSection = () => (
             initial={{ opacity: 0, letterSpacing: "0.5em" }}
             whileInView={{ opacity: 1, letterSpacing: "0.2em" }}
             transition={{ duration: 1 }}
-            className="text-xs text-primary uppercase mb-4 font-mono-code"
+            className="text-xs text-foreground/60 uppercase mb-4 font-mono-code"
           >
             Contact
           </motion.p>
@@ -53,8 +53,7 @@ const ContactSection = () => (
             initial={{ width: 0 }}
             whileInView={{ width: 64 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="h-px mb-6"
-            style={{ background: "linear-gradient(90deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))" }}
+            className="h-px mb-6 bg-foreground/20"
           />
           <TypewriterText
             text="Want to collaborate or just say hello? I'm always open to new ideas and opportunities."
@@ -77,7 +76,7 @@ const ContactSection = () => (
                   <motion.div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
                     style={{
-                      background: "linear-gradient(105deg, transparent 40%, hsl(var(--glow-blue) / 0.05) 50%, transparent 60%)",
+                      background: "linear-gradient(105deg, transparent 40%, hsl(0 0% 100% / 0.03) 50%, transparent 60%)",
                       backgroundSize: "200% 100%",
                     }}
                     animate={{ backgroundPosition: ["-100% 0", "200% 0"] }}
@@ -86,20 +85,16 @@ const ContactSection = () => (
                   <motion.div
                     whileHover={{ rotate: [0, -15, 15, 0], scale: 1.15 }}
                     transition={{ duration: 0.5 }}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(var(--glow-blue) / 0.15), hsl(var(--glow-purple) / 0.1))",
-                      border: "1px solid hsl(var(--border))",
-                    }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-secondary border border-border"
                   >
-                    <link.icon size={18} className="text-primary group-hover:text-glow-purple transition-colors duration-300" />
+                    <link.icon size={18} className="text-foreground/70 group-hover:text-foreground transition-colors duration-300" />
                   </motion.div>
                   <div className="flex-1 min-w-0">
                     <span className="text-sm font-semibold text-foreground block">{link.label}</span>
                     <span className="text-xs text-muted-foreground truncate block">{link.text}</span>
                   </div>
                   <motion.span animate={{ x: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                    <ArrowRight size={14} className="text-primary/50 group-hover:text-primary transition-colors" />
+                    <ArrowRight size={14} className="text-foreground/30 group-hover:text-foreground/60 transition-colors" />
                   </motion.span>
                 </a>
               </MagneticButton>

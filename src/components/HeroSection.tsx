@@ -37,10 +37,10 @@ const HeroSection = () => {
     <section ref={sectionRef} className="min-h-screen flex flex-col items-center justify-center px-6 pt-16 relative overflow-x-clip">
       {/* Animated radial glow */}
       <motion.div
-        animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
+        animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.05, 1] }}
         transition={{ duration: 4, repeat: Infinity }}
         className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, hsl(0 0% 15% / 0.2), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, hsl(0 0% 100% / 0.04), transparent 70%)" }}
       />
 
       {/* Horizontal scanning line */}
