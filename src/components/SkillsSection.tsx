@@ -47,24 +47,19 @@ const SkillCard = ({ skill, index }: { skill: typeof allSkills[0]; index: number
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
       className="group glass-card rounded-2xl p-5 glow-border transition-colors duration-500 relative overflow-hidden cursor-default"
     >
-      {/* Dynamic glow */}
       <motion.div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: "radial-gradient(circle at 50% 50%, hsl(var(--glow-blue) / 0.08), transparent 60%)",
+          background: "radial-gradient(circle at 50% 50%, hsl(0 0% 100% / 0.04), transparent 60%)",
         }}
       />
 
       <motion.div
         whileHover={{ rotate: [0, -15, 15, -5, 0], scale: 1.2 }}
         transition={{ duration: 0.6 }}
-        className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 relative"
-        style={{
-          background: "linear-gradient(135deg, hsl(var(--glow-blue) / 0.15), hsl(var(--glow-purple) / 0.1))",
-          border: "1px solid hsl(var(--border))",
-        }}
+        className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 relative bg-secondary border border-border"
       >
-        <skill.icon size={18} className="text-primary group-hover:text-glow-purple transition-colors duration-300" />
+        <skill.icon size={18} className="text-foreground/70 group-hover:text-foreground transition-colors duration-300" />
       </motion.div>
       <h3 className="text-sm font-semibold text-foreground mb-1">{skill.name}</h3>
       <p className="text-xs text-muted-foreground leading-relaxed">{skill.description}</p>
@@ -74,7 +69,7 @@ const SkillCard = ({ skill, index }: { skill: typeof allSkills[0]; index: number
         whileInView={{ scaleX: 1 }}
         transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
         className="absolute bottom-0 left-4 right-4 h-px origin-left"
-        style={{ background: "linear-gradient(90deg, transparent, hsl(var(--glow-blue) / 0.2), transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.1), transparent)" }}
       />
     </motion.div>
   );
@@ -88,12 +83,12 @@ const SkillsSection = () => (
       viewport={{ once: true }}
       transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
       className="absolute top-0 left-[10%] right-[10%] h-px origin-center"
-      style={{ background: "linear-gradient(90deg, transparent, hsl(var(--glow-blue) / 0.3), hsl(var(--glow-purple) / 0.3), transparent)" }}
+      style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.12), transparent)" }}
     />
 
     <div className="max-w-6xl mx-auto">
       <RevealOnScroll direction="up" blur>
-        <p className="text-xs text-primary uppercase mb-3 text-center tracking-widest font-mono-code">
+        <p className="text-xs text-foreground/60 uppercase mb-3 text-center tracking-widest font-mono-code">
           <SplitTextReveal text="Tech Stack" mode="chars" staggerDelay={0.05} />
         </p>
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">

@@ -52,7 +52,7 @@ const CursorGlow = () => {
         opacity: 0,
         transition: "opacity 0.3s ease",
         background:
-          "radial-gradient(circle, hsl(var(--glow-blue) / 0.07) 0%, hsl(var(--glow-purple) / 0.04) 30%, transparent 65%)",
+          "radial-gradient(circle, hsl(0 0% 100% / 0.04) 0%, hsl(0 0% 100% / 0.02) 30%, transparent 65%)",
         transform: "translate3d(-400px, -400px, 0)",
         backfaceVisibility: "hidden",
       }}

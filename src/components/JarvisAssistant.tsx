@@ -23,7 +23,6 @@ const KNOWLEDGE_BASE: Record<string, string> = {
 
 function getResponse(input: string): string {
   const lower = input.toLowerCase();
-  
   if (lower.includes("hello") || lower.includes("hi") || lower.includes("hey")) return KNOWLEDGE_BASE.hello;
   if (lower.includes("who") || lower.includes("harris")) return KNOWLEDGE_BASE.who;
   if (lower.includes("about")) return KNOWLEDGE_BASE.about;
@@ -34,7 +33,6 @@ function getResponse(input: string): string {
   if (lower.includes("smart") || lower.includes("classroom")) return KNOWLEDGE_BASE.smart;
   if (lower.includes("news") || lower.includes("flux") || lower.includes("saas")) return KNOWLEDGE_BASE.newsflux;
   if (lower.includes("hire") || lower.includes("job") || lower.includes("work with")) return KNOWLEDGE_BASE.hire;
-  
   return "I can tell you about Harris's **projects**, **skills**, **experience**, or how to **contact** him. What interests you?";
 }
 
@@ -67,22 +65,19 @@ const JarvisAssistant = () => {
 
   return (
     <>
-      {/* Floating trigger button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-[80] w-14 h-14 rounded-full flex items-center justify-center cursor-pointer"
+        className="fixed bottom-6 right-6 z-[80] w-14 h-14 rounded-full flex items-center justify-center cursor-pointer bg-foreground"
         style={{
-          background: "linear-gradient(135deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))",
-          boxShadow: "0 0 30px hsl(var(--glow-blue) / 0.4), 0 0 60px hsl(var(--glow-purple) / 0.2)",
+          boxShadow: "0 0 30px hsl(0 0% 100% / 0.15), 0 0 60px hsl(0 0% 100% / 0.05)",
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         animate={isOpen ? { rotate: 180 } : { rotate: 0 }}
       >
-        {isOpen ? <X size={22} className="text-primary-foreground" /> : <Bot size={22} className="text-primary-foreground" />}
+        {isOpen ? <X size={22} className="text-background" /> : <Bot size={22} className="text-background" />}
       </motion.button>
 
-      {/* Chat panel */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -92,20 +87,19 @@ const JarvisAssistant = () => {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="fixed bottom-24 right-6 z-[80] w-[360px] max-w-[calc(100vw-48px)] rounded-2xl overflow-hidden glass-card"
             style={{
-              boxShadow: "0 20px 60px hsl(var(--glow-blue) / 0.15), 0 0 1px hsl(var(--foreground) / 0.1)",
+              boxShadow: "0 20px 60px hsl(0 0% 0% / 0.5), 0 0 1px hsl(0 0% 100% / 0.1)",
             }}
           >
             {/* Header */}
             <div
               className="px-5 py-4 flex items-center gap-3"
               style={{
-                background: "linear-gradient(135deg, hsl(var(--glow-blue) / 0.15), hsl(var(--glow-purple) / 0.1))",
-                borderBottom: "1px solid hsl(var(--border))",
+                background: "hsl(0 0% 8%)",
+                borderBottom: "1px solid hsl(0 0% 15%)",
               }}
             >
-              <div className="w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))" }}>
-                <Sparkles size={14} className="text-primary-foreground" />
+              <div className="w-8 h-8 rounded-full flex items-center justify-center bg-foreground">
+                <Sparkles size={14} className="text-background" />
               </div>
               <div>
                 <p className="text-sm font-semibold text-foreground">Jarvis AI</p>
@@ -129,12 +123,9 @@ const JarvisAssistant = () => {
                   <div
                     className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
                       msg.role === "user"
-                        ? "rounded-br-sm text-primary-foreground"
+                        ? "rounded-br-sm bg-foreground text-background"
                         : "rounded-bl-sm text-foreground bg-secondary/80"
                     }`}
-                    style={msg.role === "user" ? {
-                      background: "linear-gradient(135deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))",
-                    } : undefined}
                     dangerouslySetInnerHTML={{
                       __html: msg.content
                         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -172,18 +163,15 @@ const JarvisAssistant = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about Harris..."
-                  className="flex-1 bg-secondary/60 text-foreground text-xs rounded-xl px-4 py-2.5 outline-none placeholder:text-muted-foreground/60 focus:ring-1 focus:ring-primary/50 transition-shadow"
+                  className="flex-1 bg-secondary/60 text-foreground text-xs rounded-xl px-4 py-2.5 outline-none placeholder:text-muted-foreground/60 focus:ring-1 focus:ring-foreground/30 transition-shadow"
                 />
                 <motion.button
                   type="submit"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 cursor-pointer"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))",
-                  }}
+                  className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 cursor-pointer bg-foreground"
                 >
-                  <Send size={14} className="text-primary-foreground" />
+                  <Send size={14} className="text-background" />
                 </motion.button>
               </form>
             </div>

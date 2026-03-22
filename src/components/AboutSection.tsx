@@ -14,7 +14,6 @@ const itemPop: Variants = {
   show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
 };
 
-/* Animated counter */
 const AnimatedCounter = ({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) => {
   const [display, setDisplay] = useState(0);
   const [inView, setInView] = useState(false);
@@ -92,18 +91,16 @@ const specializations = [
 
 const AboutSection = () => (
   <section id="about" className="py-28 px-6 relative z-10 overflow-hidden">
-    {/* Section divider */}
     <motion.div
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
       className="absolute top-0 left-[10%] right-[10%] h-px origin-center"
-      style={{ background: "linear-gradient(90deg, transparent, hsl(var(--glow-blue) / 0.3), hsl(var(--glow-purple) / 0.3), transparent)" }}
+      style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.12), transparent)" }}
     />
 
     <div className="max-w-6xl mx-auto">
-      {/* Stats counters row */}
       <RevealOnScroll direction="up" blur>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           <AnimatedCounter value={10} suffix="+" label="Projects Built" />
@@ -114,13 +111,12 @@ const AboutSection = () => (
       </RevealOnScroll>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-        {/* Left block — Bio */}
         <RevealOnScroll direction="left" blur scale>
           <motion.p
             initial={{ opacity: 0, letterSpacing: "0.5em" }}
             whileInView={{ opacity: 1, letterSpacing: "0.2em" }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="text-xs text-primary uppercase mb-4 font-mono-code"
+            className="text-xs text-foreground/60 uppercase mb-4 font-mono-code"
           >
             About Me
           </motion.p>
@@ -137,8 +133,7 @@ const AboutSection = () => (
             initial={{ width: 0 }}
             whileInView={{ width: 64 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="h-px mb-6"
-            style={{ background: "linear-gradient(90deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))" }}
+            className="h-px mb-6 bg-foreground/20"
           />
 
           <TypewriterText
@@ -149,7 +144,6 @@ const AboutSection = () => (
           />
         </RevealOnScroll>
 
-        {/* Right block — Specialization cards */}
         <RevealOnScroll direction="right" blur scale delay={0.2}>
           <GlassCard className="glass-card rounded-2xl p-8">
             <motion.div variants={staggerItems} initial="hidden" whileInView="show" viewport={{ once: true }} className="space-y-5">
@@ -158,16 +152,12 @@ const AboutSection = () => (
                   <motion.div
                     whileHover={{ rotate: 360, scale: 1.2 }}
                     transition={{ duration: 0.6, type: "spring" }}
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(var(--glow-blue) / 0.15), hsl(var(--glow-purple) / 0.1))",
-                      border: "1px solid hsl(var(--border))",
-                    }}
+                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 bg-secondary border border-border"
                   >
-                    <item.icon size={18} className="text-primary group-hover:text-glow-purple transition-colors duration-300" />
+                    <item.icon size={18} className="text-foreground/70 group-hover:text-foreground transition-colors duration-300" />
                   </motion.div>
                   <div>
-                    <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{item.title}</p>
+                    <p className="text-sm font-semibold text-foreground group-hover:text-foreground/80 transition-colors">{item.title}</p>
                     <p className="text-xs text-muted-foreground">{item.desc}</p>
                   </div>
                 </motion.div>

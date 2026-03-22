@@ -85,7 +85,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => (
       onClick={(e) => e.stopPropagation()}
       className="relative glass-card rounded-3xl p-8 md:p-10 max-w-lg w-full z-10"
       style={{
-        boxShadow: "0 30px 80px hsl(var(--glow-blue) / 0.15), 0 0 1px hsl(var(--foreground) / 0.1)",
+        boxShadow: "0 30px 80px hsl(0 0% 0% / 0.5), 0 0 1px hsl(0 0% 100% / 0.08)",
       }}
     >
       <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
@@ -93,14 +93,11 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => (
       </button>
 
       <div className="flex items-center gap-3 mb-6">
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center"
-          style={{ background: "linear-gradient(135deg, hsl(var(--glow-blue) / 0.2), hsl(var(--glow-purple) / 0.15))" }}
-        >
-          <project.icon size={22} className="text-primary" />
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-secondary border border-border">
+          <project.icon size={22} className="text-foreground/70" />
         </div>
         <div>
-          <p className="text-xs text-primary font-mono-code">{project.category}</p>
+          <p className="text-xs text-foreground/50 font-mono-code">{project.category}</p>
           <h3 className="text-xl font-bold text-foreground">{project.title}</h3>
         </div>
       </div>
@@ -109,7 +106,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => (
 
       <div className="flex flex-wrap gap-2 mb-6">
         {project.tags.map(tag => (
-          <span key={tag} className="text-[10px] px-3 py-1 rounded-full border border-primary/30 text-primary font-mono-code">
+          <span key={tag} className="text-[10px] px-3 py-1 rounded-full border border-foreground/20 text-foreground/60 font-mono-code">
             {tag}
           </span>
         ))}
@@ -126,8 +123,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => (
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-primary-foreground cursor-pointer transition-all hover:opacity-90"
-            style={{ background: "linear-gradient(135deg, hsl(var(--glow-blue)), hsl(var(--glow-purple)))" }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-foreground text-background cursor-pointer transition-all hover:bg-foreground/90"
           >
             <Github size={16} /> View Code
           </a>
@@ -137,7 +133,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => (
             href={project.live}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-border text-foreground hover:border-primary/40 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-border text-foreground hover:border-foreground/30 transition-all cursor-pointer"
           >
             <ExternalLink size={16} /> Live Demo
           </a>
@@ -159,11 +155,10 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
         onClick={() => setShowModal(true)}
         className="glass-card rounded-2xl p-6 md:p-8 group cursor-pointer relative overflow-hidden glow-border"
       >
-        {/* Hover shimmer */}
         <motion.div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
           style={{
-            background: "linear-gradient(105deg, transparent 40%, hsl(var(--glow-blue) / 0.06) 50%, transparent 60%)",
+            background: "linear-gradient(105deg, transparent 40%, hsl(0 0% 100% / 0.03) 50%, transparent 60%)",
             backgroundSize: "200% 100%",
           }}
           animate={{ backgroundPosition: ["-100% 0", "200% 0"] }}
@@ -174,17 +169,13 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
           <motion.div
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.8 }}
-            className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-            style={{
-              background: "linear-gradient(135deg, hsl(var(--glow-blue) / 0.15), hsl(var(--glow-purple) / 0.1))",
-              border: "1px solid hsl(var(--border))",
-            }}
+            className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 bg-secondary border border-border"
           >
-            <project.icon size={18} className="text-primary" />
+            <project.icon size={18} className="text-foreground/70" />
           </motion.div>
           <div>
-            <p className="text-[10px] text-primary font-mono-code mb-1">{project.category}</p>
-            <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
+            <p className="text-[10px] text-foreground/50 font-mono-code mb-1">{project.category}</p>
+            <h3 className="text-lg font-bold text-foreground group-hover:text-foreground/80 transition-colors">{project.title}</h3>
           </div>
         </div>
 
@@ -192,7 +183,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
 
         <div className="flex flex-wrap gap-1.5 mb-5">
           {project.tags.map(tag => (
-            <span key={tag} className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground group-hover:border-primary/30 group-hover:text-primary transition-colors font-mono-code">
+            <span key={tag} className="text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground group-hover:border-foreground/20 group-hover:text-foreground/60 transition-colors font-mono-code">
               {tag}
             </span>
           ))}
@@ -208,7 +199,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
               <MagneticButton strength={0.2}>
                 <RippleButton
                   onClick={(e?: any) => { e?.stopPropagation(); window.open(project.github, "_blank"); }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 border border-border/60 text-foreground/80 text-xs font-medium rounded-full hover:border-primary/40 hover:text-primary transition-all cursor-pointer backdrop-blur-sm"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 border border-border/60 text-foreground/80 text-xs font-medium rounded-full hover:border-foreground/30 hover:text-foreground transition-all cursor-pointer backdrop-blur-sm"
                 >
                   <Github size={14} />
                   Code
@@ -234,12 +225,12 @@ const ProjectsSection = () => (
       viewport={{ once: true }}
       transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
       className="absolute top-0 left-[10%] right-[10%] h-px origin-center"
-      style={{ background: "linear-gradient(90deg, transparent, hsl(var(--glow-blue) / 0.3), hsl(var(--glow-purple) / 0.3), transparent)" }}
+      style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.12), transparent)" }}
     />
 
     <div className="max-w-6xl mx-auto">
       <RevealOnScroll direction="up" blur>
-        <p className="text-xs text-primary uppercase tracking-widest mb-3 font-mono-code text-center">
+        <p className="text-xs text-foreground/60 uppercase tracking-widest mb-3 font-mono-code text-center">
           <SplitTextReveal text="Featured Work" mode="chars" staggerDelay={0.05} />
         </p>
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">
