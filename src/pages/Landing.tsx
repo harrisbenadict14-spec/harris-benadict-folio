@@ -101,14 +101,21 @@ const Landing = () => {
               <span className="text-gradient">Benedict</span>
             </motion.h1>
 
-            {/* Subtitle */}
-            <motion.p
+            {/* Subtitle with typewriter */}
+            <motion.div
               variants={fadeUp}
               animate={isTransitioning ? { opacity: 0, transition: { duration: 0.3 } } : {}}
               className="text-sm md:text-base tracking-[0.15em] uppercase text-muted-foreground font-mono-code mb-6"
             >
-              AI Developer & Creative Technologist
-            </motion.p>
+              {entryDone && (
+                <TypewriterText
+                  text="AI Developer & Creative Technologist"
+                  delay={1.2}
+                  speed={0.05}
+                  cursor
+                />
+              )}
+            </motion.div>
 
             {/* One-liner */}
             <motion.p
