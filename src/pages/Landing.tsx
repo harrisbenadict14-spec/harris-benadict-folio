@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, lazy, Suspense, useRef } from "react";
 import MagneticButton from "@/components/animations/MagneticButton";
 import RippleButton from "@/components/animations/RippleButton";
+import { TypewriterText } from "@/components/animations/TextReveal";
 import CinematicEntry from "@/components/CinematicEntry";
 
 const HeroScene = lazy(() => import("@/components/LazyHeroScene"));
