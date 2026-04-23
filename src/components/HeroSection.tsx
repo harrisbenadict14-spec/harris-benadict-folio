@@ -88,7 +88,7 @@ const HeroSection = () => {
       >
         <ParallaxSection speed={0.2}>
           <motion.div variants={scaleIn} className="mb-8 flex items-center justify-center">
-            <HeroScene />
+            <LazyHeroScene />
           </motion.div>
         </ParallaxSection>
 
