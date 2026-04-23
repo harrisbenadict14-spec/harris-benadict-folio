@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
@@ -9,13 +10,20 @@ import ParticleField from "@/components/ParticleField";
 import ScrollProgress from "@/components/animations/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import JarvisAssistant from "@/components/JarvisAssistant";
+import MouseParallaxBackground from "@/components/MouseParallaxBackground";
 
 const Index = () => {
   return (
-    <div className="bg-background min-h-screen">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+      className="bg-background min-h-screen"
+    >
       <ScrollProgress />
       <CursorGlow />
       <ParticleField />
+      <MouseParallaxBackground />
       <BackToTop />
       <Navbar />
       <AboutSection />
@@ -24,7 +32,7 @@ const Index = () => {
       <ContactSection />
       <Footer />
       <JarvisAssistant />
-    </div>
+    </motion.div>
   );
 };
 
