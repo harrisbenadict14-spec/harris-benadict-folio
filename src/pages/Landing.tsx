@@ -1,11 +1,13 @@
 import { motion, type Variants, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown, ArrowDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState, lazy, Suspense, useRef } from "react";
+import { useState, lazy, Suspense, useRef, useCallback } from "react";
 import MagneticButton from "@/components/animations/MagneticButton";
 import RippleButton from "@/components/animations/RippleButton";
 import { TypewriterText } from "@/components/animations/TextReveal";
 import CinematicEntry from "@/components/CinematicEntry";
+import SphereExplosion from "@/components/SphereExplosion";
+import MouseParallaxLayer from "@/components/MouseParallaxLayer";
 
 const HeroScene = lazy(() => import("@/components/LazyHeroScene"));
 const ParticleField = lazy(() => import("@/components/ParticleField"));
@@ -25,133 +27,129 @@ const Landing = () => {
   const navigate = useNavigate();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [entryDone, setEntryDone] = useState(false);
+  const [showExplosion, setShowExplosion] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const sphereScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.15]);
   const sphereOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.3]);
 
-  const handleExplore = () => {
+  const handleExplore = useCallback(() => {
     setIsTransitioning(true);
-    setTimeout(() => navigate("/portfolio"), 600);
-  };
+    setShowExplosion(true);
+  }, []);
+
+  const handleExplosionComplete = useCallback(() => {
+    navigate("/portfolio");
+  }, [navigate]);
 
   return (
     <div className="bg-background min-h-screen relative overflow-hidden">
       {!entryDone && <CinematicEntry onComplete={() => setEntryDone(true)} />}
 
-      <Suspense fallback={null}><CursorGlow /></Suspense>
-      <Suspense fallback={null}><ParticleField /></Suspense>
+      <SphereExplosion active={showExplosion} onComplete={handleExplosionComplete} />
 
-      {/* Transition overlay */}
-      <motion.div
-        initial={false}
-        animate={isTransitioning ? {
-          scaleY: 1,
-          transition: { duration: 0.6, delay: 0.4, ease: [0.76, 0, 0.24, 1] }
-        } : { scaleY: 0 }}
-        className="fixed inset-0 z-[100] origin-bottom bg-background"
-        style={{ pointerEvents: "none" }}
-      />
+      <Suspense fallback={null}><CursorGlow /></Suspense>
+
+      {/* Particle field with mouse parallax — moves slower than content for depth */}
+      <MouseParallaxLayer strength={8} className="fixed inset-0 z-0">
+        <Suspense fallback={null}><ParticleField /></Suspense>
+      </MouseParallaxLayer>
 
       <section ref={sectionRef} className="min-h-screen flex items-center px-6 md:px-12 lg:px-20 relative">
-        {/* Ambient glow orbs — monochrome */}
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none opacity-15"
-          style={{ background: "radial-gradient(circle, hsl(0 0% 100% / 0.08), transparent 70%)", filter: "blur(80px)" }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full pointer-events-none opacity-10"
-          style={{ background: "radial-gradient(circle, hsl(0 0% 100% / 0.06), transparent 70%)", filter: "blur(80px)" }} />
+        {/* Ambient glow orbs with mouse parallax (background layer — slow) */}
+        <MouseParallaxLayer strength={12} className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full opacity-15"
+            style={{ background: "radial-gradient(circle, hsl(0 0% 100% / 0.08), transparent 70%)", filter: "blur(80px)" }} />
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full opacity-10"
+            style={{ background: "radial-gradient(circle, hsl(0 0% 100% / 0.06), transparent 70%)", filter: "blur(80px)" }} />
+        </MouseParallaxLayer>
 
-        {/* Grid overlay */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={entryDone ? { opacity: 0.012 } : {}}
-          transition={{ duration: 2 }}
-          className="absolute inset-0 pointer-events-none z-[1]"
-          style={{
-            backgroundImage: `linear-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px),
-                             linear-gradient(90deg, hsl(0 0% 100% / 0.04) 1px, transparent 1px)`,
-            backgroundSize: "80px 80px",
-          }}
-        />
-
-        {/* Main content: Left text + Right sphere */}
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
-          {/* LEFT — Text content */}
+        {/* Grid overlay with subtle mouse parallax */}
+        <MouseParallaxLayer strength={4} className="absolute inset-0 pointer-events-none z-[1]">
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate={entryDone ? "show" : "hidden"}
-            className="flex flex-col items-start"
-          >
-            {/* Status badge */}
-            <motion.div variants={fadeUp} className="flex items-center gap-2 mb-6">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs text-muted-foreground tracking-widest uppercase font-mono-code">Available for work</span>
-            </motion.div>
+            initial={{ opacity: 0 }}
+            animate={entryDone ? { opacity: 0.012 } : {}}
+            transition={{ duration: 2 }}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px),
+                               linear-gradient(90deg, hsl(0 0% 100% / 0.04) 1px, transparent 1px)`,
+              backgroundSize: "80px 80px",
+            }}
+          />
+        </MouseParallaxLayer>
 
-            {/* Name */}
-            <motion.h1
-              variants={fadeUp}
-              animate={isTransitioning ? { opacity: 0, x: -80, filter: "blur(20px)", transition: { duration: 0.5 } } : {}}
-              className="text-5xl md:text-6xl lg:text-8xl font-bold text-foreground leading-[0.95] tracking-tight mb-4"
-            >
-              Harris<br />
-              <span className="text-gradient">Benedict</span>
-            </motion.h1>
-
-            {/* Subtitle with typewriter */}
+        {/* Main content */}
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+          {/* LEFT — Text content (foreground layer — faster parallax) */}
+          <MouseParallaxLayer strength={-6}>
             <motion.div
-              variants={fadeUp}
-              animate={isTransitioning ? { opacity: 0, transition: { duration: 0.3 } } : {}}
-              className="text-sm md:text-base tracking-[0.15em] uppercase text-muted-foreground font-mono-code mb-6"
+              variants={staggerContainer}
+              initial="hidden"
+              animate={entryDone ? "show" : "hidden"}
+              className="flex flex-col items-start"
             >
-              {entryDone && (
-                <TypewriterText
-                  text="AI Developer & Creative Technologist"
-                  delay={1.2}
-                  speed={0.05}
-                  cursor
-                />
-              )}
+              <motion.div variants={fadeUp} className="flex items-center gap-2 mb-6">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs text-muted-foreground tracking-widest uppercase font-mono-code">Available for work</span>
+              </motion.div>
+
+              <motion.h1
+                variants={fadeUp}
+                animate={isTransitioning ? { opacity: 0, x: -80, filter: "blur(20px)", transition: { duration: 0.5 } } : {}}
+                className="text-5xl md:text-6xl lg:text-8xl font-bold text-foreground leading-[0.95] tracking-tight mb-4"
+              >
+                Harris<br />
+                <span className="text-gradient">Benedict</span>
+              </motion.h1>
+
+              <motion.div
+                variants={fadeUp}
+                animate={isTransitioning ? { opacity: 0, transition: { duration: 0.3 } } : {}}
+                className="text-sm md:text-base tracking-[0.15em] uppercase text-muted-foreground font-mono-code mb-6"
+              >
+                {entryDone && (
+                  <TypewriterText text="AI Developer & Creative Technologist" delay={1.2} speed={0.05} cursor />
+                )}
+              </motion.div>
+
+              <motion.p
+                variants={fadeUp}
+                animate={isTransitioning ? { opacity: 0, y: 30, transition: { duration: 0.3 } } : {}}
+                className="text-sm md:text-base text-muted-foreground/70 max-w-md leading-relaxed mb-8"
+              >
+                I build intelligent systems, immersive interfaces, and next-gen digital experiences.
+              </motion.p>
+
+              <motion.div
+                variants={fadeUp}
+                className="flex flex-wrap items-center gap-4"
+                animate={isTransitioning ? { opacity: 0, scale: 1.1, transition: { duration: 0.4 } } : {}}
+              >
+                <MagneticButton strength={0.4}>
+                  <RippleButton
+                    onClick={handleExplore}
+                    className="inline-flex items-center gap-2 px-7 py-3 text-sm font-semibold rounded-full bg-foreground text-background cursor-pointer transition-all hover:bg-foreground/90"
+                  >
+                    View Projects
+                    <motion.span animate={!isTransitioning ? { x: [0, 4, 0] } : {}} transition={{ duration: 1.5, repeat: Infinity }}>
+                      <ArrowRight size={16} />
+                    </motion.span>
+                  </RippleButton>
+                </MagneticButton>
+
+                <MagneticButton strength={0.3}>
+                  <RippleButton
+                    onClick={() => { setIsTransitioning(true); setShowExplosion(true); }}
+                    className="inline-flex items-center gap-2 px-7 py-3 border border-border/60 text-foreground/80 text-sm font-medium rounded-full hover:border-foreground/30 hover:text-foreground transition-all cursor-pointer backdrop-blur-sm"
+                  >
+                    Contact Me
+                    <ArrowDown size={14} className="opacity-60" />
+                  </RippleButton>
+                </MagneticButton>
+              </motion.div>
             </motion.div>
-
-            {/* One-liner */}
-            <motion.p
-              variants={fadeUp}
-              animate={isTransitioning ? { opacity: 0, y: 30, transition: { duration: 0.3 } } : {}}
-              className="text-sm md:text-base text-muted-foreground/70 max-w-md leading-relaxed mb-8"
-            >
-              I build intelligent systems, immersive interfaces, and next-gen digital experiences.
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              variants={fadeUp}
-              className="flex flex-wrap items-center gap-4"
-              animate={isTransitioning ? { opacity: 0, scale: 1.1, transition: { duration: 0.4 } } : {}}
-            >
-              <MagneticButton strength={0.4}>
-                <RippleButton
-                  onClick={handleExplore}
-                  className="inline-flex items-center gap-2 px-7 py-3 text-sm font-semibold rounded-full bg-foreground text-background cursor-pointer transition-all hover:bg-foreground/90"
-                >
-                  View Projects
-                  <motion.span animate={!isTransitioning ? { x: [0, 4, 0] } : {}} transition={{ duration: 1.5, repeat: Infinity }}>
-                    <ArrowRight size={16} />
-                  </motion.span>
-                </RippleButton>
-              </MagneticButton>
-
-              <MagneticButton strength={0.3}>
-                <RippleButton
-                  onClick={() => navigate("/portfolio")}
-                  className="inline-flex items-center gap-2 px-7 py-3 border border-border/60 text-foreground/80 text-sm font-medium rounded-full hover:border-foreground/30 hover:text-foreground transition-all cursor-pointer backdrop-blur-sm"
-                >
-                  Contact Me
-                  <ArrowDown size={14} className="opacity-60" />
-                </RippleButton>
-              </MagneticButton>
-            </motion.div>
-          </motion.div>
+          </MouseParallaxLayer>
 
           {/* RIGHT — 3D Sphere */}
           <motion.div
@@ -159,24 +157,25 @@ const Landing = () => {
             animate={entryDone && !isTransitioning
               ? { opacity: 1, scale: 1, filter: "blur(0px)" }
               : isTransitioning
-              ? { scale: 8, opacity: 0, filter: "blur(20px)", transition: { duration: 1, ease: [0.76, 0, 0.24, 1] } }
+              ? { scale: 0.01, opacity: 0, filter: "blur(20px)", transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } }
               : {}
             }
             transition={{ duration: 1.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             style={{ scale: sphereScale, opacity: sphereOpacity }}
             className="relative flex items-center justify-center"
           >
-            {/* Glow behind sphere */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: "radial-gradient(circle, hsl(0 0% 100% / 0.06) 0%, hsl(0 0% 80% / 0.03) 40%, transparent 70%)",
-                filter: "blur(40px)",
-              }}
-            />
-            <Suspense fallback={<div style={{ width: "min(80vw,500px)", height: "min(80vw,500px)" }} />}>
-              <HeroScene />
-            </Suspense>
+            <MouseParallaxLayer strength={-15}>
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: "radial-gradient(circle, hsl(0 0% 100% / 0.06) 0%, hsl(0 0% 80% / 0.03) 40%, transparent 70%)",
+                  filter: "blur(40px)",
+                }}
+              />
+              <Suspense fallback={<div style={{ width: "min(80vw,500px)", height: "min(80vw,500px)" }} />}>
+                <HeroScene />
+              </Suspense>
+            </MouseParallaxLayer>
           </motion.div>
         </div>
 
