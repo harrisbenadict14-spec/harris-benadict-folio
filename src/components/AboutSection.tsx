@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { SplitTextReveal, TypewriterText } from "./animations/TextReveal";
 import RevealOnScroll from "./animations/RevealOnScroll";
 import { Brain, Code2, Palette, Rocket } from "lucide-react";
+import SectionParallaxBg from "./SectionParallaxBg";
 
 const staggerItems: Variants = {
   hidden: {},
@@ -91,6 +92,7 @@ const specializations = [
 
 const AboutSection = () => (
   <section id="about" className="py-28 px-6 relative z-10 overflow-hidden">
+    <SectionParallaxBg speed={0.3} variant="dots" />
     <motion.div
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
