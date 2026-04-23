@@ -1,7 +1,7 @@
 import { motion, type Variants, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
-import HeroScene from "./HeroScene";
+import LazyHeroScene from "./LazyHeroScene";
 import ParallaxSection from "./ParallaxSection";
 import { SplitTextReveal, TypewriterText, GlitchText } from "./animations/TextReveal";
 import MagneticButton from "./animations/MagneticButton";
