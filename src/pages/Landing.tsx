@@ -1,11 +1,12 @@
 import { motion, type Variants, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown, ArrowDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState, lazy, Suspense, useRef } from "react";
+import { useState, lazy, Suspense, useRef, useCallback } from "react";
 import MagneticButton from "@/components/animations/MagneticButton";
 import RippleButton from "@/components/animations/RippleButton";
 import { TypewriterText } from "@/components/animations/TextReveal";
 import CinematicEntry from "@/components/CinematicEntry";
+import SphereExplosion from "@/components/SphereExplosion";
 
 const HeroScene = lazy(() => import("@/components/LazyHeroScene"));
 const ParticleField = lazy(() => import("@/components/ParticleField"));
@@ -25,15 +26,30 @@ const Landing = () => {
   const navigate = useNavigate();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [entryDone, setEntryDone] = useState(false);
+  const [explosionActive, setExplosionActive] = useState(false);
+  const [sphereCenter, setSphereCenter] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const sphereRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const sphereScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.15]);
   const sphereOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.3]);
 
-  const handleExplore = () => {
+  const handleExplore = useCallback(() => {
+    // Get sphere center position for explosion origin
+    if (sphereRef.current) {
+      const rect = sphereRef.current.getBoundingClientRect();
+      setSphereCenter({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+    } else {
+      setSphereCenter({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    }
+
     setIsTransitioning(true);
-    setTimeout(() => navigate("/portfolio"), 600);
-  };
+    setExplosionActive(true);
+  }, []);
+
+  const handleExplosionComplete = useCallback(() => {
+    navigate("/portfolio");
+  }, [navigate]);
 
   return (
     <div className="bg-background min-h-screen relative overflow-hidden">
@@ -42,14 +58,22 @@ const Landing = () => {
       <Suspense fallback={null}><CursorGlow /></Suspense>
       <Suspense fallback={null}><ParticleField /></Suspense>
 
-      {/* Transition overlay */}
+      {/* Sphere Explosion Transition */}
+      <SphereExplosion
+        active={explosionActive}
+        originX={sphereCenter.x}
+        originY={sphereCenter.y}
+        onComplete={handleExplosionComplete}
+      />
+
+      {/* Transition overlay — fades in after explosion */}
       <motion.div
         initial={false}
         animate={isTransitioning ? {
-          scaleY: 1,
-          transition: { duration: 0.6, delay: 0.4, ease: [0.76, 0, 0.24, 1] }
-        } : { scaleY: 0 }}
-        className="fixed inset-0 z-[100] origin-bottom bg-background"
+          opacity: 1,
+          transition: { duration: 0.4, delay: 1.0, ease: [0.76, 0, 0.24, 1] }
+        } : { opacity: 0 }}
+        className="fixed inset-0 z-[100] bg-background"
         style={{ pointerEvents: "none" }}
       />
 
@@ -155,11 +179,12 @@ const Landing = () => {
 
           {/* RIGHT — 3D Sphere */}
           <motion.div
+            ref={sphereRef}
             initial={{ opacity: 0, scale: 0.3, filter: "blur(30px)" }}
             animate={entryDone && !isTransitioning
               ? { opacity: 1, scale: 1, filter: "blur(0px)" }
               : isTransitioning
-              ? { scale: 8, opacity: 0, filter: "blur(20px)", transition: { duration: 1, ease: [0.76, 0, 0.24, 1] } }
+              ? { scale: 0.01, opacity: 0, filter: "blur(10px)", transition: { duration: 0.4, ease: [0.76, 0, 0.24, 1] } }
               : {}
             }
             transition={{ duration: 1.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}

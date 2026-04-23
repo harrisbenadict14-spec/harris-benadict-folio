@@ -5,6 +5,7 @@ import RevealOnScroll from "./animations/RevealOnScroll";
 import MagneticButton from "./animations/MagneticButton";
 import RippleButton from "./animations/RippleButton";
 import { Github, ExternalLink, X, Cpu, Newspaper, Gamepad2, Brain } from "lucide-react";
+import SectionParallaxBg from "./SectionParallaxBg";
 
 const fromLeft: Variants = {
   hidden: { opacity: 0, x: -120, filter: "blur(10px)" },
@@ -219,6 +220,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
 
 const ProjectsSection = () => (
   <section id="projects" className="py-28 px-6 relative z-10 overflow-hidden">
+    <SectionParallaxBg speed={0.35} variant="orbs" />
     <motion.div
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}

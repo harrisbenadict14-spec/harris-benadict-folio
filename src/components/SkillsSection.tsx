@@ -3,6 +3,7 @@ import { Cpu, Code, Wifi, Zap, Terminal, CircuitBoard } from "lucide-react";
 import { useRef } from "react";
 import { SplitTextReveal } from "./animations/TextReveal";
 import RevealOnScroll from "./animations/RevealOnScroll";
+import SectionParallaxBg from "./SectionParallaxBg";
 
 const allSkills = [
   { icon: Cpu, name: "Embedded Systems", description: "Firmware and hardware interfaces for microcontrollers." },
@@ -77,6 +78,7 @@ const SkillCard = ({ skill, index }: { skill: typeof allSkills[0]; index: number
 
 const SkillsSection = () => (
   <section id="skills" className="py-28 px-6 relative z-10 overflow-hidden" style={{ perspective: "1000px" }}>
+    <SectionParallaxBg speed={0.4} variant="lines" />
     <motion.div
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
