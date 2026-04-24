@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useReducedParallax } from "@/hooks/useReducedParallax";
 
 interface SectionParallaxBgProps {
   /** Speed multiplier: higher = more movement. Default 0.3 */
@@ -11,18 +12,26 @@ interface SectionParallaxBgProps {
 /**
  * Decorative parallax background elements for portfolio sections.
  * Each variant creates a different subtle moving backdrop.
+ *
+ * Performance: scroll-driven transforms are skipped on reduced-motion / mobile
+ * devices — static decorations are rendered instead.
  */
 const SectionParallaxBg = ({ speed = 0.3, variant = "dots" }: SectionParallaxBgProps) => {
   const ref = useRef(null);
+  const reduced = useReducedParallax();
+  // Scale down the parallax range on reduced devices (still create the hooks
+  // unconditionally to keep hook order stable).
+  const effectiveSpeed = reduced ? 0 : speed;
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [speed * 80, -speed * 80]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [speed * 120, -speed * 120]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [speed * 50, -speed * 50]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, speed * 15]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [effectiveSpeed * 80, -effectiveSpeed * 80]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [effectiveSpeed * 120, -effectiveSpeed * 120]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [effectiveSpeed * 50, -effectiveSpeed * 50]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, effectiveSpeed * 15]);
 
   return (
     <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
