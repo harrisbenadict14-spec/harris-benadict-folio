@@ -1,4 +1,4 @@
-import { motion, type Variants, useMotionValue, useTransform } from "framer-motion";
+import { motion, type Variants, useMotionValue, useTransform, useInView, animate } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { SplitTextReveal, TypewriterText } from "./animations/TextReveal";
 import RevealOnScroll from "./animations/RevealOnScroll";
@@ -16,39 +16,35 @@ const itemPop: Variants = {
 };
 
 const AnimatedCounter = ({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) => {
-  const [display, setDisplay] = useState(0);
-  const [inView, setInView] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold: 0.5 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+    if (isInView) {
+      const controls = animate(count, value, {
+        duration: 1.5,
+        ease: [0.22, 1, 0.36, 1],
+      });
+      return controls.stop;
+    }
+  }, [isInView, value, count]);
 
   useEffect(() => {
-    if (!inView) return;
-    const duration = 1500;
-    const startTime = performance.now();
-    const animate = (now: number) => {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.round(eased * value));
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-    requestAnimationFrame(animate);
-  }, [inView, value]);
+    return rounded.onChange((v) => setDisplayValue(v));
+  }, [rounded]);
 
   return (
     <motion.div
       ref={ref}
       whileHover={{ y: -4, transition: { duration: 0.3 } }}
       className="glass-card rounded-2xl p-6 text-center group glow-border cursor-default"
+      aria-label={`${label}: ${value}${suffix}`}
     >
       <p className="text-3xl md:text-4xl font-bold text-gradient mb-1">
-        {display}{suffix}
+        {displayValue}{suffix}
       </p>
       <p className="text-xs text-muted-foreground">{label}</p>
     </motion.div>

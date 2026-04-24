@@ -219,8 +219,14 @@ const ParticleField = () => {
     /* ── loop ──────────────────────────────────────── */
     let animId: number;
     const clock = new THREE.Clock();
+    let isTabVisible = true;
 
     const animate = () => {
+      if (!isTabVisible) {
+        animId = requestAnimationFrame(animate);
+        return;
+      }
+      
       const elapsed = clock.getElapsedTime();
       mat.uniforms.uTime.value  = elapsed;
       sMat.uniforms.uTime.value = elapsed;
@@ -228,6 +234,17 @@ const ParticleField = () => {
       animId = requestAnimationFrame(animate);
     };
     animate();
+
+    /* ── tab visibility ────────────────────────────── */
+    const handleVisibilityChange = () => {
+      isTabVisible = !document.hidden;
+      if (isTabVisible) {
+        clock.start();
+      } else {
+        clock.stop();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     /* ── resize ────────────────────────────────────── */
     const onResize = () => {
@@ -243,6 +260,7 @@ const ParticleField = () => {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       renderer.dispose();
       geo.dispose();
       mat.dispose();

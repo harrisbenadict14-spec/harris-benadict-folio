@@ -41,6 +41,7 @@ const Navbar = () => {
 
         <motion.a
           href="#"
+          aria-label="Back to top"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
@@ -64,7 +65,12 @@ const Navbar = () => {
           ))}
         </div>
 
-        <button className="md:hidden text-foreground" onClick={() => setOpen(!open)}>
+        <button 
+          className="md:hidden text-foreground" 
+          onClick={() => setOpen(!open)}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+        >
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>

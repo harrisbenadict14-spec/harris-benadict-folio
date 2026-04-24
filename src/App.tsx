@@ -2,7 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LazyMotion, domMax } from "framer-motion";
 
 import { Component, type ReactNode, Suspense } from "react";
 import { useEffect } from "react";
@@ -49,21 +50,23 @@ const App = () => {
 
   return (
     <ErrorBoundary>
-      <Suspense fallback={<div style={{color:"white",padding:40}}>Loading app...</div>}>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/portfolio" element={<Index />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </QueryClientProvider>
-      </Suspense>
+      <LazyMotion features={domMax}>
+        <Suspense fallback={<div style={{color:"white",padding:40}}>Loading app...</div>}>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/portfolio" element={<Index />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </Suspense>
+      </LazyMotion>
     </ErrorBoundary>
   );
 };

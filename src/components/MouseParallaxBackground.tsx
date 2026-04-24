@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useReducedParallax } from "@/hooks/useReducedParallax";
 
 /**
@@ -20,11 +20,11 @@ const MouseParallaxBackground = () => {
   const springX = useSpring(mouseX, { stiffness: 30, damping: 30 });
   const springY = useSpring(mouseY, { stiffness: 30, damping: 30 });
 
-  // Derived layers (declared at top level — no hook calls inside JSX)
-  const orbX1 = useSpring(useMotionValue(0), { stiffness: 25, damping: 35 });
-  const orbY1 = useSpring(useMotionValue(0), { stiffness: 25, damping: 35 });
-  const orbX2 = useSpring(useMotionValue(0), { stiffness: 25, damping: 35 });
-  const orbY2 = useSpring(useMotionValue(0), { stiffness: 25, damping: 35 });
+  // Deriving transforms to avoid .get() in render
+  const orb1X = useTransform(springX, (val) => val * -15);
+  const orb1Y = useTransform(springY, (val) => val * -15);
+  const orb2X = useTransform(springX, (val) => val * -20);
+  const orb2Y = useTransform(springY, (val) => val * -20);
 
   const rafRef = useRef<number | null>(null);
   const pendingRef = useRef<{ x: number; y: number } | null>(null);
@@ -38,10 +38,6 @@ const MouseParallaxBackground = () => {
       if (!p) return;
       mouseX.set(p.x);
       mouseY.set(p.y);
-      orbX1.set(p.x * -15);
-      orbY1.set(p.y * -15);
-      orbX2.set(p.x * -20);
-      orbY2.set(p.y * -20);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -61,7 +57,7 @@ const MouseParallaxBackground = () => {
       rafRef.current = null;
       pendingRef.current = null;
     };
-  }, [reduced, mouseX, mouseY, orbX1, orbY1, orbX2, orbY2]);
+  }, [reduced, mouseX, mouseY]);
 
   // On reduced devices, render only static decorative layers (no listeners, no springs animating)
   if (reduced) {
@@ -81,12 +77,26 @@ const MouseParallaxBackground = () => {
 
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
-      {/* Mid-layer floating orbs */}
+      {/* Deep background grid - moves slowest */}
+      <motion.div
+        className="absolute inset-[-50px] opacity-[0.015]"
+        style={{
+          x: 0,
+          y: 0,
+          backgroundImage: `
+            linear-gradient(hsl(0 0% 100% / 0.06) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(0 0% 100% / 0.06) 1px, transparent 1px)
+          `,
+          backgroundSize: "100px 100px",
+        }}
+      />
+
+      {/* Mid-layer floating orbs - moves medium speed */}
       <motion.div
         className="absolute top-[20%] left-[15%] w-[300px] h-[300px] rounded-full"
         style={{
-          x: orbX1,
-          y: orbY1,
+          x: orb1X,
+          y: orb1Y,
           background: "radial-gradient(circle, hsl(0 0% 100% / 0.03), transparent 70%)",
           filter: "blur(60px)",
           willChange: "transform",
@@ -95,8 +105,8 @@ const MouseParallaxBackground = () => {
       <motion.div
         className="absolute bottom-[25%] right-[20%] w-[250px] h-[250px] rounded-full"
         style={{
-          x: orbX2,
-          y: orbY2,
+          x: orb2X,
+          y: orb2Y,
           background: "radial-gradient(circle, hsl(0 0% 100% / 0.025), transparent 70%)",
           filter: "blur(50px)",
           willChange: "transform",

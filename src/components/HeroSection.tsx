@@ -1,11 +1,12 @@
 import { motion, type Variants, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { useRef } from "react";
-import HeroScene from "./HeroScene";
+import { useRef, lazy, Suspense } from "react";
 import ParallaxSection from "./ParallaxSection";
 import { SplitTextReveal, TypewriterText, GlitchText } from "./animations/TextReveal";
 import MagneticButton from "./animations/MagneticButton";
 import RippleButton from "./animations/RippleButton";
+
+const LazyHeroScene = lazy(() => import("./LazyHeroScene"));
 
 const staggerContainer: Variants = {
   hidden: {},
@@ -88,7 +89,9 @@ const HeroSection = () => {
       >
         <ParallaxSection speed={0.2}>
           <motion.div variants={scaleIn} className="mb-8 flex items-center justify-center">
-            <HeroScene />
+            <Suspense fallback={<div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px]" />}>
+              <LazyHeroScene />
+            </Suspense>
           </motion.div>
         </ParallaxSection>
 

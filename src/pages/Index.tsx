@@ -1,16 +1,25 @@
 import { motion } from "framer-motion";
+import { lazy, Suspense } from "react";
 import Navbar from "@/components/Navbar";
-import AboutSection from "@/components/AboutSection";
-import SkillsSection from "@/components/SkillsSection";
-import ProjectsSection from "@/components/ProjectsSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
-import CursorGlow from "@/components/CursorGlow";
-import ParticleField from "@/components/ParticleField";
 import ScrollProgress from "@/components/animations/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
-import JarvisAssistant from "@/components/JarvisAssistant";
-import MouseParallaxBackground from "@/components/MouseParallaxBackground";
+import CursorGlow from "@/components/CursorGlow";
+import ParticleField from "@/components/ParticleField";
+
+// Lazy load sections for better performance
+const AboutSection = lazy(() => import("@/components/AboutSection"));
+const SkillsSection = lazy(() => import("@/components/SkillsSection"));
+const ProjectsSection = lazy(() => import("@/components/ProjectsSection"));
+const ContactSection = lazy(() => import("@/components/ContactSection"));
+const Footer = lazy(() => import("@/components/Footer"));
+const JarvisAssistant = lazy(() => import("@/components/JarvisAssistant"));
+const MouseParallaxBackground = lazy(() => import("@/components/MouseParallaxBackground"));
+
+const SectionLoader = () => (
+  <div className="h-96 flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const Index = () => {
   return (
@@ -23,15 +32,35 @@ const Index = () => {
       <ScrollProgress />
       <CursorGlow />
       <ParticleField />
-      <MouseParallaxBackground />
+      <Suspense fallback={null}>
+        <MouseParallaxBackground />
+      </Suspense>
       <BackToTop />
       <Navbar />
-      <AboutSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <ContactSection />
-      <Footer />
-      <JarvisAssistant />
+      
+      <Suspense fallback={<SectionLoader />}>
+        <AboutSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <SkillsSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <ProjectsSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <ContactSection />
+      </Suspense>
+      
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
+      
+      <Suspense fallback={null}>
+        <JarvisAssistant />
+      </Suspense>
     </motion.div>
   );
 };
