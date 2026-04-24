@@ -7,33 +7,98 @@ interface Message {
   content: string;
 }
 
+// Detailed project knowledge base — Jarvis prioritizes project depth
+const PROJECTS: Record<string, string> = {
+  newsflux: `**NewsFlux** is a multi-tenant SaaS platform that digitizes the entire workflow of newspaper distribution agencies.
+
+🔹 **Problem it solves:**
+Newspaper agencies still rely on manual registers for stock, distribution, and billing — leading to errors, revenue leaks, and zero visibility.
+
+🔹 **Key features:**
+- Multi-tenant architecture (multiple agencies, isolated data)
+- Role-Based Access Control — Super Admin, Agency Admin, Workers
+- Stock & distributor management
+- Customer subscription tracking
+- Automated monthly billing (Revenue = Sold × Price)
+- Offline-friendly data entry for field workers
+
+🔹 **Tech stack:**
+React.js, Python (FastAPI), PostgreSQL, Docker, JWT Auth
+
+🔹 **How it works:**
+Agencies onboard through a Super Admin, manage their distributors and customers, log daily sold/returned stock, and the system auto-calculates revenue and generates monthly bills — all from a single dashboard.
+
+🔹 **What makes it unique:**
+It's built specifically for an underserved industry, achieves 99% uptime, and replaces decades-old paper workflows with a clean, role-aware SaaS — proving that even "boring" industries deserve great software.`,
+
+  smartclassroom: `**Smart Classroom Automation** is an IoT-powered system that automates attendance, access, and energy management in classrooms.
+
+🔹 **Problem it solves:**
+Manual attendance wastes class time, classrooms waste power when empty, and there's no real-time visibility into who's inside.
+
+🔹 **Key features:**
+- RFID-based student access control
+- Face recognition attendance (95% accuracy)
+- ESP32-driven IoT controller for lights, fans, projector
+- IP camera live monitoring
+- Auto power-off when room is empty
+- Centralized attendance logs
+
+🔹 **Tech stack:**
+ESP32, Arduino, RFID, IP Cameras, Python (OpenCV + face_recognition), MQTT, Node.js dashboard
+
+🔹 **How it works:**
+Students tap their RFID card → ESP32 unlocks the door and powers the room → IP camera captures faces → Python service matches faces and marks attendance → when no one is detected, the system shuts everything off.
+
+🔹 **What makes it unique:**
+It fuses **embedded hardware + computer vision + automation** into one cohesive system — saving teaching time, cutting energy costs, and producing tamper-proof attendance records.`,
+};
+
 const KNOWLEDGE_BASE: Record<string, string> = {
-  hello: "Hey there! 👋 I'm Jarvis, Harris Benedict's AI assistant. Ask me about his projects, skills, or how to get in touch!",
-  hi: "Hello! I'm Jarvis — here to tell you about Harris. What would you like to know?",
-  who: "Harris Benedict is an AI Developer & Creative Technologist. He builds intelligent systems, immersive interfaces, and next-gen digital experiences. He specializes in AI, full-stack development, IoT, and creative tech.",
-  about: "Harris is passionate about pushing the boundaries of technology. He combines AI expertise with creative design to build products that feel like the future. His focus areas include machine learning, embedded systems, and immersive web experiences.",
+  hello: "Hey there! 👋 I'm Jarvis, Harris Benedict's AI assistant. Ask me about his **projects**, skills, or how to get in touch!",
+  who: "Harris Benedict is an AI Developer & Creative Technologist. He builds intelligent systems, immersive interfaces, and next-gen digital experiences — specializing in AI, full-stack development, IoT, and creative tech.",
+  about: "Harris combines AI expertise with creative design to build products that feel like the future. His focus areas include machine learning, embedded systems, and immersive web experiences.",
   skills: "Harris's core skills include:\n• **AI & Machine Learning** — NLP, computer vision, model deployment\n• **Full-Stack Development** — React, Node.js, Python, FastAPI\n• **IoT & Embedded Systems** — ESP32, Arduino, RFID, sensor networks\n• **Creative Tech** — Three.js, WebGL, interactive experiences\n• **Cloud & DevOps** — Docker, PostgreSQL, cloud architecture",
-  projects: "Harris has built some impressive projects:\n\n🏫 **Smart Classroom Automation** — IoT system with RFID, ESP32, IP cameras and face recognition for automated attendance.\n\n📰 **NewsFlux** — Multi-tenant SaaS platform for newspaper distribution with automated billing and RBAC.\n\nMore projects are always in the works!",
+  projectsList: "Harris has built some impressive projects:\n\n📰 **NewsFlux** — Multi-tenant SaaS for newspaper distribution agencies.\n\n🏫 **Smart Classroom Automation** — IoT + face recognition system for classrooms.\n\nAsk me about either one for a deep dive!",
   contact: "You can reach Harris at:\n📧 harrisbenadict14@gmail.com\n🔗 github.com/harrisbenadict14-spec\n💼 linkedin.com/in/harrisbenadict",
-  experience: "Harris has hands-on experience building production-grade IoT systems, SaaS platforms, and AI-powered applications. He's worked on face recognition systems, multi-tenant architectures, and embedded device networks.",
-  smart: "The Smart Classroom project uses RFID for access control, ESP32 as the IoT controller, Python-based face recognition for attendance, and automated power management — achieving 95% recognition accuracy!",
-  newsflux: "NewsFlux is a multi-tenant SaaS platform that digitizes newspaper distribution agencies. It handles stock management, distributor tracking, customer subscriptions, and automated monthly billing with 99% uptime.",
-  hire: "Harris is open to exciting opportunities! Reach out at harrisbenadict14@gmail.com or connect on LinkedIn. He's passionate about AI, IoT, and building the future of tech.",
+  experience: "Harris has hands-on experience building production-grade IoT systems, SaaS platforms, and AI-powered applications — including face recognition systems, multi-tenant architectures, and embedded device networks.",
+  hire: "Harris is open to exciting opportunities! Reach out at **harrisbenadict14@gmail.com** or connect on LinkedIn.",
+  unknown: "I don't have details about that project yet, but I can tell you about **NewsFlux** or **Smart Classroom Automation** — just ask!",
+  fallback: "I can tell you about Harris's **projects** (NewsFlux, Smart Classroom), **skills**, **experience**, or how to **contact** him. What interests you?",
 };
 
 function getResponse(input: string): string {
   const lower = input.toLowerCase();
-  if (lower.includes("hello") || lower.includes("hi") || lower.includes("hey")) return KNOWLEDGE_BASE.hello;
-  if (lower.includes("who") || lower.includes("harris")) return KNOWLEDGE_BASE.who;
+
+  // 1) SPECIFIC PROJECT MATCHES — highest priority
+  if (lower.includes("newsflux") || lower.includes("news flux") || (lower.includes("news") && lower.includes("paper"))) {
+    return PROJECTS.newsflux;
+  }
+  if (lower.includes("smart classroom") || lower.includes("classroom") || lower.includes("rfid") || lower.includes("face recog") || lower.includes("attendance")) {
+    return PROJECTS.smartclassroom;
+  }
+
+  // 2) Generic "tell me about a project" — list projects
+  if (lower.includes("project") || lower.includes("portfolio") || lower.includes("built") || lower.includes("work on")) {
+    // If they mention a specific unknown project name alongside "project"
+    const knownTokens = ["newsflux", "classroom", "smart", "rfid"];
+    const mentionsUnknown = /tell me about ([a-z0-9\- ]+)/i.test(input) && !knownTokens.some(t => lower.includes(t));
+    if (mentionsUnknown && !lower.match(/^(tell me about (his |the |your )?projects?\??$)/)) {
+      return KNOWLEDGE_BASE.unknown;
+    }
+    return KNOWLEDGE_BASE.projectsList;
+  }
+
+  // 3) General queries
+  if (lower.match(/^(hello|hi|hey|yo|sup)\b/)) return KNOWLEDGE_BASE.hello;
+  if (lower.includes("who") || (lower.includes("harris") && !lower.includes("project"))) return KNOWLEDGE_BASE.who;
   if (lower.includes("about")) return KNOWLEDGE_BASE.about;
   if (lower.includes("skill") || lower.includes("tech") || lower.includes("stack")) return KNOWLEDGE_BASE.skills;
-  if (lower.includes("project") || lower.includes("work") || lower.includes("built")) return KNOWLEDGE_BASE.projects;
   if (lower.includes("contact") || lower.includes("email") || lower.includes("reach")) return KNOWLEDGE_BASE.contact;
   if (lower.includes("experience") || lower.includes("background")) return KNOWLEDGE_BASE.experience;
-  if (lower.includes("smart") || lower.includes("classroom")) return KNOWLEDGE_BASE.smart;
-  if (lower.includes("news") || lower.includes("flux") || lower.includes("saas")) return KNOWLEDGE_BASE.newsflux;
   if (lower.includes("hire") || lower.includes("job") || lower.includes("work with")) return KNOWLEDGE_BASE.hire;
-  return "I can tell you about Harris's **projects**, **skills**, **experience**, or how to **contact** him. What interests you?";
+
+  return KNOWLEDGE_BASE.fallback;
 }
 
 const JarvisAssistant = () => {
